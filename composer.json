@@ -1,0 +1,13 @@
+{
+    "require": {
+        "silex/silex": "~2.0",
+        "puzzle/configuration": "~1.7",
+        "twig/twig": "~1.27"
+    },
+    "autoload": {
+        "psr-4": {
+            "Onyx\\": "lib/",
+            "MyApp\\": "src/"
+        }
+    }
+}

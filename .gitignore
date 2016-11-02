@@ -1,0 +1,11 @@
+# Composer files
+vendor/
+
+# Application runtime files
+var/
+
+# Application hydrated configuration files
+# config/*.yml
+
+# less compilation target directory
+assets/compiled/

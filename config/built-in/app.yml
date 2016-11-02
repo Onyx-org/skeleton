@@ -1,0 +1,6 @@
+################################
+# ONYX main configuration file #
+################################
+
+debug: true
+var.path: var
