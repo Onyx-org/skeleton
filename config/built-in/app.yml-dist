@@ -2,5 +2,5 @@
 # ONYX main configuration file #
 ################################
 
-debug: true
-var.path: var
+debug: <%app.debug%>
+var.path: <%var.path%>

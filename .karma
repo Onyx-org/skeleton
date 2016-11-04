@@ -1,0 +1,8 @@
+sourcePath: config/
+formatters:
+  yaml:
+    <true>: "true"
+    <false>: "false"
+fileExtensionFormatters:
+    yml: yaml
+defaultFormatter: yaml

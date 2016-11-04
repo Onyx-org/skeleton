@@ -5,7 +5,13 @@ vendor/
 var/
 
 # Application hydrated configuration files
-# config/*.yml
+config/built-in/*.yml
+config/local/*.yml
 
 # less compilation target directory
 assets/compiled/
+
+# Eclipse files
+.buildpath
+.project
+.settings/

@@ -1,3 +1,0 @@
-developmentMode: true
-cache:
-    directory: cache/twig
