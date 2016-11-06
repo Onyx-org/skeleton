@@ -9,4 +9,3 @@ start:
 
 stop:
 	docker-compose down
-
