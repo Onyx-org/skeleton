@@ -38,4 +38,7 @@ packaging-build:
 bower: packaging-build
 	docker run -t -i --rm -v ${ONYX_DIR}:/home/bower -u ${USER_ID}:${GROUP_ID} onyx/packaging bower --config.interactive=false install
 
+gulp: packaging-build
+		docker run -t -i --rm -v ${ONYX_DIR}:/home/bower -u ${USER_ID}:${GROUP_ID} onyx/packaging gulp hello
+
 .PHONY: install config install-deps update-deps phpunit bower packaging-build
