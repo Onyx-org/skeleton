@@ -7,8 +7,8 @@ all: install phpunit
 install: install-deps config
 
 config: karma
-	karma hydrate
-	
+	./karma hydrate
+
 karma:
 	wget https://github.com/Niktux/karma/releases/download/5.5.0/karma.phar
 	chmod 0755 karma.phar
