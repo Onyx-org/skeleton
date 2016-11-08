@@ -14,10 +14,12 @@ karma:
 	chmod 0755 karma.phar
 	mv karma.phar karma
 
-install-deps: composer.phar
+install-deps: install-back-deps install-front-deps
+
+install-back-deps: composer.phar
 	php composer.phar install
 
-update-deps: composer.phar
+update-back-deps: composer.phar
 	php composer.phar update
 
 composer.phar:
@@ -27,6 +29,8 @@ phpunit: vendor/bin/phpunit
 	vendor/bin/phpunit
 
 vendor/bin/phpunit: install-deps
+
+install-front-deps: bower
 
 packaging-build:
 	docker build --build-arg UID=${USER_ID} -t onyx/packaging docker/images/packaging/
