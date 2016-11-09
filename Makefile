@@ -4,13 +4,13 @@ GROUP_ID=$(shell id -g)
 
 all: install phpunit
 
-install: install-deps config
+install: install-deps config gulp
 
 config: karma
 	./karma hydrate
 
 karma:
-	wget https://github.com/Niktux/karma/releases/download/5.5.0/karma.phar
+	wget -q https://github.com/Niktux/karma/releases/download/5.5.0/karma.phar
 	chmod 0755 karma.phar
 	mv karma.phar karma
 
@@ -32,13 +32,46 @@ vendor/bin/phpunit: install-deps
 
 install-front-deps: bower
 
-packaging-build:
-	docker build --build-arg UID=${USER_ID} -t onyx/packaging docker/images/packaging/
+create-bower-image:
+	docker build -q --build-arg UID=${USER_ID} -t onyx/bower docker/images/packaging/bower/
 
-bower: packaging-build
-	docker run -t -i --rm -v ${ONYX_DIR}:/home/bower -u ${USER_ID}:${GROUP_ID} onyx/packaging bower --config.interactive=false install
+clean-bower-image:
+		docker rmi onyx/bower
 
-gulp: packaging-build
-		docker run -t -i --rm -v ${ONYX_DIR}:/home/bower -u ${USER_ID}:${GROUP_ID} onyx/packaging gulp hello
+bower: create-bower-image
+	docker run -t -i --rm \
+	           -v ${ONYX_DIR}:/home/bower \
+	           -u ${USER_ID}:${GROUP_ID} \
+						 onyx/bower bower --config.interactive=false install
 
-.PHONY: install config install-deps update-deps phpunit bower packaging-build
+create-gulp-image:
+	docker build -q --build-arg UID=${USER_ID} -t onyx/gulp docker/images/packaging/gulp/
+
+clean-gulp-image:
+	docker rmi onyx/gulp
+
+gulp = docker run -t -i --rm \
+			-v ${ONYX_DIR}/gulpfile.js:/home/gulp/gulpfile.js \
+			-v ${ONYX_DIR}:/home/gulp/project \
+			-u ${USER_ID}:${GROUP_ID} \
+			onyx/gulp gulp $1
+
+gulp: create-gulp-image
+	$(call gulp, sass)
+	$(call gulp, publish)
+
+uninstall: clean remove-deps
+	rm -rf www/assets
+	rm -f composer.lock
+	rm -f config/built-in/*.yml
+
+clean:
+	rm -f karma
+	rm -f composer.phar
+	-docker rmi onyx/bower onyx/gulp
+
+remove-deps:
+	rm -rf vendor
+	rm -rf vendor-front
+
+.PHONY: install config install-deps install-back-deps install-front-deps update-deps phpunit bower create-bower-image gulp create-gulp-image clean clean-bower-image clean-gulp-image remove-deps uninstall
