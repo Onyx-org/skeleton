@@ -2,7 +2,7 @@
 
 ## Overview
 
-PHP application sketon based on Silex 2. Promote framework agnostic conception.
+PHP application skeleton based on Silex 2. Promote framework agnostic conception.
 
 ## Getting started
 
