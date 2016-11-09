@@ -10,7 +10,9 @@ config: karma
 	./karma hydrate
 
 karma:
-	wget -q https://github.com/Niktux/karma/releases/download/5.5.0/karma.phar
+	$(eval LATEST_VERSION := $(shell curl -L -s -H 'Accept: application/json' https://github.com/niktux/karma/releases/latest | sed -e 's/.*"tag_name":"\(.*\)".*/\1/'))
+	@echo "Latest version of Karma is ${LATEST_VERSION}"
+	wget -q https://github.com/Niktux/karma/releases/download/${LATEST_VERSION}/karma.phar
 	chmod 0755 karma.phar
 	mv karma.phar karma
 
@@ -75,4 +77,3 @@ remove-deps:
 	rm -rf vendor-front
 
 .PHONY: install config install-deps install-back-deps install-front-deps update-deps phpunit bower create-bower-image gulp create-gulp-image clean clean-bower-image clean-gulp-image remove-deps uninstall
-
