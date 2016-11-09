@@ -8,7 +8,8 @@ PHP application sketon based on Silex 2. Promote framework agnostic conception.
 
 ### Requirements
 
-docker, executable by your user (see official documentation to set it up)
+* docker, executable by your user (see official documentation to set it up)
+* php >= 5.5.9
 
 ### Installation
 
