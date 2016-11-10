@@ -12,9 +12,8 @@ config: karma
 karma:
 	$(eval LATEST_VERSION := $(shell curl -L -s -H 'Accept: application/json' https://github.com/niktux/karma/releases/latest | sed -e 's/.*"tag_name":"\(.*\)".*/\1/'))
 	@echo "Latest version of Karma is ${LATEST_VERSION}"
-	wget -q https://github.com/Niktux/karma/releases/download/${LATEST_VERSION}/karma.phar
-	chmod 0755 karma.phar
-	mv karma.phar karma
+	wget -O karma -q https://github.com/Niktux/karma/releases/download/${LATEST_VERSION}/karma.phar
+	chmod 0755 karma
 
 install-deps: install-back-deps install-front-deps
 
