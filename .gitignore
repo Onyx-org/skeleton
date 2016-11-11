@@ -20,8 +20,8 @@ config/local/*.yml
 #================================================
 # Deployed files
 #================================================
-www/assets/
-assets/css/main.css
+www/assets/*
+assets/css/*
 
 #================================================
 # Eclipse files
