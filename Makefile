@@ -59,6 +59,7 @@ gulp = docker run -t -i --rm \
 
 gulp: create-gulp-image
 	$(call gulp, sass)
+	$(call gulp, minify)
 	$(call gulp, publish)
 
 uninstall: clean remove-deps

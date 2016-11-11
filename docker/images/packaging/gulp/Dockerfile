@@ -7,6 +7,6 @@ RUN npm install -g gulp && \
 
 WORKDIR /home/gulp
 
-RUN npm install --save-dev gulp gulp-sass
+RUN npm install --save-dev gulp gulp-sass gulp-csso gulp-csscomb gulp-cssbeautify gulp-autoprefixer gulp-rename
 
 CMD ["/bin/bash"]
