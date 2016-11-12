@@ -9,7 +9,8 @@
         "silex/silex": "~2.0",
         "puzzle/configuration": "~1.7",
         "twig/twig": "~1.27",
-        "symfony/console" : "~3.1"
+        "symfony/console" : "~3.1",
+        "symfony/twig-bridge" : "~3.1"
     },
     "autoload": {
         "psr-4": {
