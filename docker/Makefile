@@ -4,8 +4,8 @@ export WEB_PORT
 export USER_ID=$(id -u)
 export GROUP_ID=$(id -g)
 
-start:
+up:
 	docker-compose up -d
 
-stop:
+down:
 	docker-compose down
