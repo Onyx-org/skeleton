@@ -24,7 +24,10 @@ update-back-deps: composer.phar
 	php composer.phar update
 
 composer.phar:
-	 curl -sS https://getcomposer.org/installer | php
+	curl -sS https://getcomposer.org/installer | php
+
+dumpautoload: composer.phar
+	php composer.phar dumpautoload
 
 phpunit: vendor/bin/phpunit
 	vendor/bin/phpunit
@@ -76,4 +79,4 @@ remove-deps:
 	rm -rf vendor
 	rm -rf vendor-front
 
-.PHONY: install config install-deps install-back-deps install-front-deps update-deps phpunit bower create-bower-image gulp create-gulp-image clean clean-bower-image clean-gulp-image remove-deps uninstall
+.PHONY: install config install-deps install-back-deps install-front-deps update-deps phpunit bower create-bower-image gulp create-gulp-image clean clean-bower-image clean-gulp-image remove-deps uninstall dumpautoload

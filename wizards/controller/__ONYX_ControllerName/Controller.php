@@ -1,6 +1,6 @@
 <?php
 
-namespace __ONYX_Namespace\Controllers\Home;
+namespace __ONYX_Namespace\Controllers\__ONYX_ControllerName;
 
 use Onyx\Traits;
 use Symfony\Component\HttpFoundation\Response;

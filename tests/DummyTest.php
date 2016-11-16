@@ -1,6 +1,6 @@
 <?php
 
-namespace MyApp;
+namespace __ONYX_Namespace;
 
 class DummyTest extends \PHPUnit_Framework_TestCase
 {

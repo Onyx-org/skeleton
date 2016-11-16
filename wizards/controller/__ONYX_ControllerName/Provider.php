@@ -1,6 +1,6 @@
 <?php
 
-namespace __ONYX_Namespace\Controllers\Home;
+namespace __ONYX_Namespace\Controllers\__ONYX_ControllerName;
 
 use Silex\Application;
 use Silex\Api\ControllerProviderInterface;
@@ -9,7 +9,7 @@ class Provider implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
-        $app['controller.home'] = function() use($app) {
+        $app['controller.__ONYX_ControllerName'] = function() use($app) {
             $controller = new Controller();
             $controller
                 ->setRequest($app['request_stack'])
@@ -21,9 +21,9 @@ class Provider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers
-            ->match('/', 'controller.home:homeAction')
+            ->match('/', 'controller.__ONYX_ControllerName:homeAction')
             ->method('GET')
-            ->bind('home');
+            ->bind('__ONYX_ControllerName.home');
 
         return $controllers;
     }
