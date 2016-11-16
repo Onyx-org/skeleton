@@ -1,11 +1,11 @@
 include .onyx
 
-set-namespace:
+wizard-set-namespace:
 	find src/ tests/ www/ -type f -exec sed -i 's/${OLD_NAMESPACE}/$(NAMESPACE)/g' {} \;
 	sed -i 's/${OLD_NAMESPACE}/$(NAMESPACE)/g' console
 	sed -i 's/${OLD_NAMESPACE}\\\\/$(NAMESPACE)\\\\/g' ./composer.json
 
-controller:
+wizard-new-controller:
 	$(eval CONTROLLER_NAME := $(shell bash -c 'read -p "Enter your controller name : " controllerName; echo $$controllerName'))
 	$(eval TARGET_DIR := "src/Controllers/${CONTROLLER_NAME}")
 	@cp -rf wizards/controller/* src/Controllers
