@@ -2,6 +2,8 @@ ONYX_DIR=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 USER_ID=$(shell id -u)
 GROUP_ID=$(shell id -g)
 
+include wizards.mk
+
 all: install phpunit
 
 install: install-deps config gulp
