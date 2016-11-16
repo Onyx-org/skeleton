@@ -1,6 +1,6 @@
 <?php
 
-namespace MyApp;
+namespace __ONYX_Namespace;
 
 use Puzzle\Configuration;
 use Pimple\Container;

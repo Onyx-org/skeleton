@@ -6,7 +6,7 @@ use Puzzle\Configuration\Yaml;
 use Puzzle\Configuration\Stacked;
 use Gaufrette\Filesystem;
 use Gaufrette\Adapter\Local;
-use MyApp\Application;
+use __ONYX_Namespace\Application;
 
 $defaultConfigurationFileStorage= new Filesystem(new Local(__DIR__ . '/../config/built-in'));
 $defaultConfiguration = new Yaml($defaultConfigurationFileStorage);

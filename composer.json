@@ -15,7 +15,7 @@
     "autoload": {
         "psr-4": {
             "Onyx\\": "lib/",
-            "MyApp\\": "src/"
+            "__ONYX_Namespace\\": "src/"
         }
     }
 }
