@@ -8,9 +8,10 @@ var rename = require('gulp-rename');
 
 var paths = {
     sass: 'project/assets/sass/',
-     css: 'project/assets/css/',
-     bower: 'project/vendor-front/' ,
-    www: 'project/www/'
+    css: 'project/assets/css/',
+    bower: 'project/vendor-front/' ,
+    www: 'project/www/',
+    fontAwesome: 'project/vendor-front/font-awesome/fonts/'
 }
 
 gulp.task('sass', function() {
@@ -29,8 +30,16 @@ gulp.task('minify', function() {
         .pipe(gulp.dest(paths.css));
 });
 
+gulp.task('publish', ['publish-css', 'publish-fonts']);
+
 // symlink does not work while documentation says they do !
-gulp.task('publish', function() { 
+gulp.task('publish-css', function() { 
     return gulp.src(paths.css + '*.css', {followSymlinks: false})
-        .pipe(gulp.dest(paths.www + 'assets/css')); 
+        .pipe(gulp.dest(paths.www + 'assets/css'))
+});
+
+// symlink does not work while documentation says they do !
+gulp.task('publish-fonts', function() { 
+    return gulp.src(paths.fontAwesome + '*.*', {followSymlinks: false})
+        .pipe(gulp.dest(paths.www + 'assets/fonts'))
 });

@@ -6,7 +6,11 @@ include wizards.mk
 
 all: install phpunit
 
-install: install-deps config gulp
+install: var install-deps config gulp
+
+var:
+	mkdir -m a+w var
+
 
 config: karma
 	./karma hydrate
