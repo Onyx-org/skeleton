@@ -13,7 +13,7 @@ core-wizard-set-namespace:
 	$(info )
 	$(info Backslashes must be replaced by ::. Example : My::Onyx::Skeleton::Namespace)
 	$(info )
-	$(eval NEW_NAMESPACE := $(shell bash -c 'read -p "Enter your application namespace : " namespace; echo $$namespace'))
+	$(eval NEW_NAMESPACE := $(shell bash -c 'read -p "Enter your application newNamespace : " newNamespace; echo $$newNamespace'))
 	$(eval BACKSLASHED_NAMESPACE := $(call convert-namespace,$(NAMESPACE)))
 	$(eval BACKSLASHED_NEW_NAMESPACE := $(call convert-namespace,$(NEW_NAMESPACE)))
 	$(eval ESCAPED_NAMESPACE := $(subst \\,\\\\,$(BACKSLASHED_NAMESPACE)))
