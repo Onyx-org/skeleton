@@ -3,6 +3,7 @@ USER_ID=$(shell id -u)
 GROUP_ID=$(shell id -g)
 
 include wizards.mk
+include qa.mk
 
 all: install phpunit
 
