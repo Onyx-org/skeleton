@@ -2,7 +2,7 @@ ONYX_DIR=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 USER_ID=$(shell id -u)
 GROUP_ID=$(shell id -g)
 
-include wizards.mk
+include vendor/onyx/core/wizards.mk
 include qa.mk
 
 all: install phpunit
