@@ -9,7 +9,7 @@ qa = docker run -t -i --rm \
   -u ${USER_ID}:${GROUP_ID} \
 	onyx/qa $1
 
-qa-phar = $(call qa, $1 --exclude=vendor --exclude=vendor-front --exclude=var/cache $2)
+qa-phar = $(call qa, $1 --exclude=vendor --exclude=bower_components --exclude=var/cache $2)
 
 qa-loc: create-qa-image
 	$(call qa-phar, phploc, --count-tests onyx)
@@ -21,7 +21,7 @@ qa-dcd: create-qa-image
 		$(call qa-phar, phpdcd, onyx)
 
 qa-md: create-qa-image
-		$(call qa, phpmd onyx text codesize${COMMA}unusedcode${COMMA}naming${COMMA}cleancode${COMMA}design --exclude=vendor${COMMA}vendor-front${COMMA}var/cache --suffixes php)
+		$(call qa, phpmd onyx text codesize${COMMA}unusedcode${COMMA}naming${COMMA}cleancode${COMMA}design --exclude=vendor${COMMA}bower_components${COMMA}var/cache --suffixes php)
 
 qa-depend: create-qa-image
-		$(call qa, pdepend --suffix=php --ignore=vendor${COMMA}vendor-front${COMMA}var/cache --summary-xml=onyx/pdepend.xml --overview-pyramid=onyx/pyramid.svg --jdepend-chart=onyx/jdepend.svg onyx)
+		$(call qa, pdepend --suffix=php --ignore=vendor${COMMA}bower_components${COMMA}var/cache --summary-xml=onyx/pdepend.xml --overview-pyramid=onyx/pyramid.svg --jdepend-chart=onyx/jdepend.svg onyx)

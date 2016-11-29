@@ -3,7 +3,7 @@
 #================================================
 composer.phar
 vendor/
-vendor-front/
+bower_components/
 
 #================================================
 # Application runtime files

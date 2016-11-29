@@ -9,9 +9,9 @@ var rename = require('gulp-rename');
 var paths = {
     sass: 'project/assets/sass/',
     css: 'project/assets/css/',
-    bower: 'project/vendor-front/' ,
+    bower: 'project/bower_components/' ,
     www: 'project/www/',
-    fontAwesome: 'project/vendor-front/font-awesome/fonts/'
+    fontAwesome: 'project/bower_components/font-awesome/fonts/'
 }
 
 gulp.task('sass', function() {

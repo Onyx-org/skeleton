@@ -84,6 +84,6 @@ clean:
 
 remove-deps:
 	rm -rf vendor
-	rm -rf vendor-front
+	rm -rf bower_components
 
 .PHONY: install config install-deps install-back-deps install-front-deps update-deps phpunit bower create-bower-image gulp create-gulp-image clean clean-bower-image clean-gulp-image remove-deps uninstall dumpautoload
