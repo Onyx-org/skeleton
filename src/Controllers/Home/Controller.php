@@ -19,7 +19,7 @@ class Controller
         $this->logger = new NullLogger();
     }
 
-    public function homeAction()
+    public function homeAction(): Response
     {
         return $this->render('home.twig');
     }

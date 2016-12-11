@@ -8,7 +8,7 @@ use Onyx\Providers;
 
 class Application extends \Onyx\Application
 {
-    protected function registerProviders()
+    protected function registerProviders(): void
     {
         $this->register(new SessionServiceProvider());
         $this->register(new Providers\Twig());
@@ -18,19 +18,19 @@ class Application extends \Onyx\Application
         //*/
     }
 
-    protected function initializeServices()
+    protected function initializeServices(): void
     {
         $this->configureTwig();
     }
 
-    private function configureTwig()
+    private function configureTwig(): void
     {
         $this['twig.path.manager']->addPath(array(
             $this['root.path'] . 'views/',
         ));
     }
 
-    protected function mountControllerProviders()
+    protected function mountControllerProviders(): void
     {
         $this->mount('/', new Controllers\Home\Provider());
     }

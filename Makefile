@@ -1,6 +1,7 @@
 ONYX_DIR=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 USER_ID=$(shell id -u)
 GROUP_ID=$(shell id -g)
+COMPOSER_ARGS=--ignore-platform-reqs
 
 -include vendor/onyx/core/wizards.mk
 include qa.mk
@@ -25,10 +26,10 @@ karma:
 install-deps: install-back-deps install-front-deps
 
 install-back-deps: composer.phar
-	php composer.phar install
+	php composer.phar install $(COMPOSER_ARGS)
 
 update-back-deps: composer.phar
-	php composer.phar update
+	php composer.phar update $(COMPOSER_ARGS)
 
 composer.phar:
 	curl -sS https://getcomposer.org/installer | php
