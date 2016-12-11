@@ -2,10 +2,10 @@
     "name": "onyx/skeleton",
     "type": "project",
     "require-dev" : {
-        "phpunit/phpunit" : "~4.8"
+        "phpunit/phpunit" : "~5.7.3"
     },
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=7.1.0",
         "onyx/core": "dev-master@dev",
         "silex/silex": "~2.0",
         "puzzle/configuration": "~1.7",

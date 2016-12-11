@@ -4,7 +4,6 @@ namespace __ONYX_Namespace;
 
 use Puzzle\Configuration;
 use Pimple\Container;
-//use Spear\Silex\Provider\Commands\AsseticDumper;
 
 class Console
 {
@@ -19,10 +18,9 @@ class Console
         $this->app = new \Onyx\Console\Application();
 
         $this->app->add(new Console\HelloWorld());
-    //    $this->app->add(new AsseticDumper($this->configuration, $dic['assetic.dumper'], $dic['assetic.path_to_web']));
     }
 
-    public function run()
+    public function run(): void
     {
         $this->app->run();
     }
