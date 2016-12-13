@@ -32,7 +32,7 @@ module.exports = {
             $: 'jquery',
             jQuery: 'jquery'
         }),
-        new ExtractTextPlugin('styles.css'),
+        new ExtractTextPlugin('[name].css'),
         new webpack.optimize.CommonsChunkPlugin({
             // The order of this array matters
             name: 'common',
