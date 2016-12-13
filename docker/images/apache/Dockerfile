@@ -10,7 +10,9 @@ RUN apt-get update && \
                        build-essential \
                        libtool && \
     apt-get -y autoremove && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    pecl install xdebug && \
+    docker-php-ext-enable xdebug
 
 ADD bootstrap.sh /root/bootstrap.sh
 
