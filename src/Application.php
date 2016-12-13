@@ -12,10 +12,7 @@ class Application extends \Onyx\Application
     {
         $this->register(new SessionServiceProvider());
         $this->register(new Providers\Twig());
-        /*
-        $this->register(new Provider\DBAL());
-        $this->register(new Provider\AsseticServiceProvider());
-        //*/
+        $this->register(new Providers\DBAL());
     }
 
     protected function initializeServices(): void
