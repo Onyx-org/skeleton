@@ -7,7 +7,7 @@ include qa.mk
 
 all: install phpunit
 
-install: var install-deps config
+install: var install-deps config webpack
 
 var:
 	mkdir -m a+w var
@@ -49,6 +49,13 @@ npm:
 		-u ${USER_ID}:${GROUP_ID} \
 		-w /usr/src/app node:7 \
 		npm install
+
+webpack:
+	docker run -it --rm \
+		-v ${ONYX_DIR}:/usr/src/app \
+		-u ${USER_ID}:${GROUP_ID} \
+		-w /usr/src/app node:7 \
+		node node_modules/.bin/webpack
 
 uninstall: clean remove-deps
 	rm -rf www/assets

@@ -23,6 +23,7 @@ config/local/*.yml
 #================================================
 www/assets/*
 assets/css/*
+views/layout.twig
 
 #================================================
 # QA reports
