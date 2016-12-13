@@ -11,7 +11,7 @@ module.exports = {
     },
     output: {
         path: path.join(__dirname, 'www/assets'),
-        filename: '[name].js',
+        filename: '[name].[chunkhash].js',
         publicPath: '/assets'
     },
     module: {
@@ -32,7 +32,7 @@ module.exports = {
             $: 'jquery',
             jQuery: 'jquery'
         }),
-        new ExtractTextPlugin('[name].css'),
+        new ExtractTextPlugin('[name].[chunkhash].css'),
         new webpack.optimize.CommonsChunkPlugin({
             // The order of this array matters
             name: 'common',
