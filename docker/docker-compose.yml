@@ -8,6 +8,15 @@ services:
             - ..:/var/www/onyx
         ports:
             - "${WEB_PORT}:80"
+        links:
+            - db
         environment:
             - USER_ID=${USER_ID}
             - GROUP_ID=${GROUP_ID}
+    db:
+        image: mariadb
+        container_name: onyx-database
+        volumes:
+            - ../var/data:/var/lib/mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=root

@@ -1,0 +1,15 @@
+default:
+    database: <%db.name%>
+    host: <%db.host%>
+    user: <%db.user%>
+    password: <%db.password%>
+    port: <%db.port%>
+    charset: <%db.charset%>
+
+#otherDatabaseConnection:
+#    database: other
+#    host: localhost
+#    user: other
+#    password: other
+#    port: 3306
+#    charset: utf8

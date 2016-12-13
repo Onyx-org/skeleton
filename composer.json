@@ -9,6 +9,7 @@
         "onyx/core": "dev-master@dev",
         "silex/silex": "~2.0",
         "puzzle/configuration": "~1.7",
+        "doctrine/dbal": "~2.5",
         "twig/twig": "~1.27",
         "symfony/console" : "~3.1",
         "symfony/twig-bridge" : "~3.1"
