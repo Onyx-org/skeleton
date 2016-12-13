@@ -19,7 +19,12 @@ module.exports = {
             {
                 test: /\.scss$/,
                 loader: ExtractTextPlugin.extract('css-loader!sass-loader')
-            }
+            },
+            {
+                // Any file type that needs to be copied to public assets without any parsing
+                test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)\?*.*/,
+                loader: 'file-loader'
+            },
         ]
     },
     plugins: [
