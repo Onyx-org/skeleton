@@ -25,6 +25,12 @@ class Provider implements ControllerProviderInterface
             ->method('GET')
             ->bind('home');
 
+        $controllers
+            ->match('/hello/{name}', 'controller.home:helloAction')
+            ->value('name', 'world')
+            ->method('GET')
+            ->bind('test');
+
         return $controllers;
     }
 }
