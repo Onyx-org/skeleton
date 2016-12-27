@@ -20,9 +20,9 @@ class TwigWebpackExtension extends \Twig_Extension
 
     /**
      * Outputs list of files from the webpack compilation manifest
-     * @param  $string $include A regular expression of files to include
-     * @param  $string $include A regular expression of files to exclude
-     * @return Array           List of file paths
+     * @param  $string $include A glob expression of files to include
+     * @param  $string $include A glob expression of files to exclude
+     * @return Array            List of file paths
      */
     public function webpackAssets($include = null, $exclude = null)
     {
