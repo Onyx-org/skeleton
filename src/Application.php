@@ -5,6 +5,8 @@ namespace __ONYX_Namespace;
 use Puzzle\Configuration;
 use Silex\Provider\SessionServiceProvider;
 use Onyx\Providers;
+use __ONYX_Namespace\Twig\TwigWebpackExtension;
+use __ONYX_Namespace\Webpack\WebpackServiceProvider;
 
 class Application extends \Onyx\Application
 {
@@ -12,6 +14,7 @@ class Application extends \Onyx\Application
     {
         $this->register(new SessionServiceProvider());
         $this->register(new Providers\Twig());
+        $this->register(new WebpackServiceProvider());
         /*
         $this->register(new Provider\DBAL());
         $this->register(new Provider\AsseticServiceProvider());
@@ -28,6 +31,7 @@ class Application extends \Onyx\Application
         $this['twig.path.manager']->addPath(array(
             $this['root.path'] . 'views/',
         ));
+        $this['twig']->addExtension(new TwigWebpackExtension($this['webpack_manifest']));
     }
 
     protected function mountControllerProviders()

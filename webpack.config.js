@@ -1,7 +1,9 @@
 var path = require('path');
 var webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var ManifestPlugin = require('webpack-manifest-plugin');
+
+const publicPath = '/assets/';
 
 module.exports = {
     entry: {
@@ -12,7 +14,7 @@ module.exports = {
     output: {
         path: path.join(__dirname, 'www/assets'),
         filename: '[name].[chunkhash].js',
-        publicPath: '/assets'
+        publicPath
     },
     module: {
         loaders: [
@@ -39,10 +41,9 @@ module.exports = {
             chunks: ['main', 'admin'],
             minChunks: 2
         }),
-        new HtmlWebpackPlugin({
-            filename: path.join(__dirname, 'views/layout.twig'),
-            template: 'views/layout.twig.tpl',
-            excludeChunks: ['admin']
+        new ManifestPlugin({
+            fileName: 'webpack-manifest.json',
+            publicPath
         })
     ]
 };
