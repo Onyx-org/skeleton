@@ -51,6 +51,7 @@ npm:
 		npm install
 
 webpack:
+	rm -f www/assets/*
 	docker run -it --rm \
 		-v ${ONYX_DIR}:/usr/src/app \
 		-u ${USER_ID}:${GROUP_ID} \
