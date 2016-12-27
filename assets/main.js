@@ -1,5 +1,6 @@
 import { resolve } from 'universal-router';
 
+require('./sass/vendor.scss');
 require('./sass/main.scss');
 
 const routes = [
