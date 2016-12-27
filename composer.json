@@ -11,7 +11,8 @@
         "puzzle/configuration": "~1.7",
         "twig/twig": "~1.27",
         "symfony/console" : "~3.1",
-        "symfony/twig-bridge" : "~3.1"
+        "symfony/twig-bridge" : "~3.1",
+        "symfony/var-dumper": "^3.2"
     },
     "autoload": {
         "psr-4": {
