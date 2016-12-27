@@ -25,7 +25,7 @@ karma:
 install-deps: install-back-deps install-front-deps
 
 install-back-deps: composer.phar
-	php composer.phar install
+	php composer.phar install --ignore-platform-reqs
 
 update-back-deps: composer.phar
 	php composer.phar update
