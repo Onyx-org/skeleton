@@ -63,6 +63,14 @@ webpack:
 		-w /usr/src/app node:7 \
 		npm run build
 
+webpack-dev:
+	rm -f www/assets/*
+	docker run -it --rm \
+		-v ${ONYX_DIR}:/usr/src/app \
+		-u ${USER_ID}:${GROUP_ID} \
+		-w /usr/src/app node:7 \
+		npm run build:dev
+
 webpack-watch:
 	docker run -it --rm \
 		-e "DEV_SERVER_PORT=${DEV_SERVER_PORT}" \
