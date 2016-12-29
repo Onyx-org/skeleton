@@ -1,6 +1,12 @@
+WEB_PORT=80
 ONYX_DIR=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 USER_ID=$(shell id -u)
 GROUP_ID=$(shell id -g)
+
+export WEB_PORT
+export DEV_SERVER_PORT=$(shell echo $(WEB_PORT)+1000 | bc)
+export USER_ID=$(id -u)
+export GROUP_ID=$(id -g)
 
 -include vendor/onyx/core/wizards.mk
 include qa.mk
@@ -11,7 +17,6 @@ install: var install-deps config webpack
 
 var:
 	mkdir -m a+w var
-
 
 config: karma
 	./karma hydrate
@@ -56,7 +61,16 @@ webpack:
 		-v ${ONYX_DIR}:/usr/src/app \
 		-u ${USER_ID}:${GROUP_ID} \
 		-w /usr/src/app node:7 \
-		node node_modules/.bin/webpack
+		npm run build
+
+webpack-watch:
+	docker run -it --rm \
+		-e "DEV_SERVER_PORT=${DEV_SERVER_PORT}" \
+		-p "${DEV_SERVER_PORT}:${DEV_SERVER_PORT}" \
+		-u ${USER_ID}:${GROUP_ID} \
+		-v ${ONYX_DIR}:/usr/src/app \
+		-w /usr/src/app node:7 \
+		npm run watch
 
 uninstall: clean remove-deps
 	rm -rf www/assets
@@ -70,5 +84,17 @@ clean:
 remove-deps:
 	rm -rf vendor
 	rm -rf node_modules
+
+up:
+	docker-compose -f docker/docker-compose.yml up -d
+
+stop:
+	docker-compose -f docker/docker-compose.yml stop
+
+down:
+	docker-compose -f docker/docker-compose.yml down
+
+build:
+	docker-compose -f docker/docker-compose.yml build
 
 .PHONY: install config install-deps install-back-deps install-front-deps update-deps phpunit clean remove-deps uninstall dumpautoload
