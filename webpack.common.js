@@ -19,6 +19,14 @@ module.exports = function(publicPath = '/assets/') {
         module: {
             loaders: [
                 {
+                    test: /\.js$/,
+                    exclude: /(node_modules|bower_components)/,
+                    loader: 'babel-loader',
+                    query: {
+                        presets: ['es2015']
+                    }
+                },
+                {
                     // Any file type that needs to be copied to public assets without any parsing
                     test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)\?*.*/,
                     loader: 'file-loader'
