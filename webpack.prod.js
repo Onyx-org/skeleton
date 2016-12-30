@@ -13,6 +13,18 @@ module.exports = merge(webpackCommon, {
             {
                 test: /\.scss$/,
                 loader: ExtractTextPlugin.extract('css-loader?sourceMap!sass-loader?sourceMap')
+            },
+            {
+                test: /\.html$/,
+                loader: 'html',
+                query: {
+                    minimize: true,
+                    removeAttributeQuotes: false,
+                    caseSensitive: true,
+                    // Teach html-minifier about Angular 2 syntax
+                    customAttrSurround: [ [/#/, /(?:)/], [/\*/, /(?:)/], [/\[?\(?/, /(?:)/] ],
+                    customAttrAssign: [ /\)?\]?=/ ],
+                }
             }
         ]
     },

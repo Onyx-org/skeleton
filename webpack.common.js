@@ -23,6 +23,10 @@ module.exports = function(publicPath = '/assets/') {
                     test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)\?*.*/,
                     loader: 'file-loader'
                 },
+                {
+                    test: /\.html$/,
+                    loader: 'html'
+                },
             ]
         },
         plugins: [
