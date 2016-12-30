@@ -37,5 +37,10 @@ module.exports = merge(webpackCommon, {
             chunks: ['main', 'admin'],
             minChunks: 2
         }),
+        new webpack.LoaderOptionsPlugin({
+            minimize: true,
+            debug: false
+        }),
+        new webpack.optimize.UglifyJsPlugin(),
     ]
 });
