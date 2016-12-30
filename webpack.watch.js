@@ -10,7 +10,7 @@ module.exports = merge(webpackCommon('http://localhost:' + port + '/assets/'), {
         loaders: [
             {
                 test: /\.scss$/,
-                loaders: ['style-loader', 'css-loader', 'sass-loader']
+                loaders: ['style-loader?sourceMap', 'css-loader?sourceMap', 'sass-loader?sourceMap']
             }
         ]
     },
@@ -23,6 +23,7 @@ module.exports = merge(webpackCommon('http://localhost:' + port + '/assets/'), {
         inline: true,
         port
     },
+    devtool: 'eval-source-map',
     plugins: [
         new WriteFilePlugin({
             test: /webpack-manifest\.json/,

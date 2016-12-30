@@ -12,10 +12,11 @@ module.exports = merge(webpackCommon, {
         loaders: [
             {
                 test: /\.scss$/,
-                loader: ExtractTextPlugin.extract('css-loader!sass-loader')
+                loader: ExtractTextPlugin.extract('css-loader?sourceMap!sass-loader?sourceMap')
             }
         ]
     },
+    devtool: 'cheap-module-source-map',
     plugins: [
         new ExtractTextPlugin('[name].[chunkhash].css'),
         new webpack.optimize.CommonsChunkPlugin({
