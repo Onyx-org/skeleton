@@ -7,7 +7,6 @@ const outputPath =  path.join(__dirname, 'www/assets');
 module.exports = function(publicPath = '/assets/') {
     return {
         entry: {
-            vendor: './assets/vendor',
             main: './assets/main',
             admin: './assets/admin'
         },
@@ -29,7 +28,7 @@ module.exports = function(publicPath = '/assets/') {
                 {
                     // Any file type that needs to be copied to public assets without any parsing
                     test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)\?*.*/,
-                    loader: 'file-loader'
+                    loader: 'file-loader?name=[name].[hash].[ext]'
                 },
                 {
                     test: /\.html$/,
@@ -40,11 +39,13 @@ module.exports = function(publicPath = '/assets/') {
         plugins: [
             new webpack.ProvidePlugin({
                 $: 'jquery',
-                jQuery: 'jquery'
+                jQuery: 'jquery',
+                'window.jQuery': 'jquery',
+                'window.Tether': 'tether'
             }),
             new ManifestPlugin({
                 fileName: 'webpack-manifest.json',
-                publicPath
+                publicPath,
             })
         ]
     };

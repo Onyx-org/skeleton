@@ -7,7 +7,7 @@ module.exports = merge(webpackCommon(), {
         loaders: [
             {
                 test: /\.scss$/,
-                loaders: ['style-loader', 'css-loader?sourceMap', 'sass-loader?sourceMap']
+                loaders: ['style-loader?sourceMap', 'css-loader?sourceMap', 'sass-loader?sourceMap']
             }
         ]
     },

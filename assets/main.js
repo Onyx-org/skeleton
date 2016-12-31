@@ -1,5 +1,6 @@
 import { resolve } from 'universal-router';
 
+require('bootstrap');
 require('./sass/vendor.scss');
 require('./sass/main.scss');
 
@@ -16,8 +17,9 @@ const routes = [
             return 'Hello ' + name;
         }
     }
-]
+];
 
 resolve(routes, { path: window.location.pathname }).then(result => {
     console.log(result);
 });
+

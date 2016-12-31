@@ -12,7 +12,12 @@ module.exports = merge(webpackCommon, {
         loaders: [
             {
                 test: /\.scss$/,
-                loader: ExtractTextPlugin.extract('css-loader?sourceMap!sass-loader?sourceMap')
+                loader: [
+                    'file-loader?name=[name].[hash].css',
+                    'extract-loader',
+                    'css-loader',
+                    'sass-loader',
+                ]
             },
             {
                 test: /\.html$/,
@@ -28,19 +33,30 @@ module.exports = merge(webpackCommon, {
             }
         ]
     },
-    devtool: 'cheap-module-source-map',
+    devtool: 'source-map',
     plugins: [
-        new ExtractTextPlugin('[name].[chunkhash].css'),
         new webpack.optimize.CommonsChunkPlugin({
             // The order of this array matters
             name: 'common',
             chunks: ['main', 'admin'],
             minChunks: 2
         }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'vendor.main',
+            chunks: ['main'],
+            minChunks: module => /node_modules\//.test(module.resource)
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'vendor.admin',
+            chunks: ['admin'],
+            minChunks: module => /node_modules\//.test(module.resource)
+        }),
         new webpack.LoaderOptionsPlugin({
             minimize: true,
             debug: false
         }),
-        new webpack.optimize.UglifyJsPlugin(),
+        new webpack.optimize.UglifyJsPlugin({
+            sourceMap: true
+        }),
     ]
 });
