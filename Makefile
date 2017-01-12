@@ -5,8 +5,8 @@ GROUP_ID=$(shell id -g)
 
 export WEB_PORT
 export DEV_SERVER_PORT=$(shell echo $(WEB_PORT)+1000 | bc)
-export USER_ID=$(id -u)
-export GROUP_ID=$(id -g)
+export USER_ID=$(shell id -u)
+export GROUP_ID=$(shell id -g)
 
 -include vendor/onyx/core/wizards.mk
 include qa.mk
