@@ -19,7 +19,7 @@
   <body>
     {% block content %}{% endblock %}
     {% block javascript %}
-        {% for asset in webpackAssets(include='*.js', exclude='admin.js,main.js') %}
+        {% for asset in webpackAssets(include='*.js', exclude='admin.js,main.js,*.async.js') %}
             <script src="{{ asset }}"></script>
         {% endfor %}
         {% for asset in webpackAssets('main.js') %}
