@@ -41,7 +41,7 @@ module.exports = function(publicPath = '/assets/') {
                 $: 'jquery',
                 jQuery: 'jquery',
                 'window.jQuery': 'jquery',
-                'window.Tether': 'tether'
+                'Tether': 'tether'
             }),
             new ManifestPlugin({
                 fileName: 'webpack-manifest.json',
