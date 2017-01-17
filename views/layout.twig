@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+{% set routeName = global.request.attributes.get('_route') %}
+<html lang="en"{% if routeName is defined %} data-route="{{ routeName }}"{% endif %}>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">

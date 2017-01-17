@@ -13,6 +13,7 @@ module.exports = function(publicPath = '/assets/') {
         output: {
             path: outputPath,
             filename: '[name].js',
+            chunkFilename: '[name].[id].js',
             publicPath
         },
         module: {
@@ -35,6 +36,9 @@ module.exports = function(publicPath = '/assets/') {
                     loader: 'html'
                 },
             ]
+        },
+        resolve: {
+            modules: [path.resolve(__dirname, 'assets'), 'node_modules']
         },
         plugins: [
             new webpack.ProvidePlugin({

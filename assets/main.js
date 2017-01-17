@@ -1,32 +1,21 @@
-import { resolve } from 'universal-router';
+import 'bootstrap';
+import 'sass/vendor.scss';
+import 'sass/main.scss';
+import App from 'App';
+import HomeController from 'Controllers/Home';
 
-require('bootstrap');
-require('./sass/vendor.scss');
-require('./sass/main.scss');
+let app = new App();
 
-const routes = [
-    {
-        path: '/',
-        action: () => {
-            return 'Home page';
-        }
-    },
-    {
-        path: '/hello/:name?',
-        action: (context, { name = 'world' }) => {
-            // Use require.ensure if you want to split something out of the main entry file
-            // Suffix the chunk name with .async
-            return require.ensure([], (require) => {
-                const Hello = require('./Controllers/Hello.js').default;
-                const helloController = new Hello(name);
+// Simple controller
+app.registerRoute('home', HomeController);
 
-                return helloController.sayHello();
-            }, 'hello.async');
-        }
-    }
-];
+// Async controller bundled separately.
+// The third parameter of require.ensure is the chunk name that webpack will create.
+// The name "something.async" allows it not to be loaded in the template.
+app.registerRoute('hello', () => require.ensure([], function(require) {
+    return require('Controllers/Hello');
+}, 'hello.async'));
 
-resolve(routes, { path: window.location.pathname }).then(result => {
-    console.log(result);
+document.addEventListener("DOMContentLoaded", () => {
+    app.handle(document.getElementsByTagName('html')[0].dataset.route);
 });
-

@@ -7,6 +7,7 @@ var webpackCommon = require('./webpack.common.js')();
 module.exports = merge(webpackCommon, {
     output: {
         filename: '[name].[chunkhash].js',
+        chunkFilename: '[name].[id].[chunkhash].js'
     },
     module: {
         loaders: [

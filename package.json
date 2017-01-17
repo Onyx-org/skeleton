@@ -37,7 +37,6 @@
     "sass-loader": "^2.0.1",
     "style-loader": "^0.13.1",
     "tether": "^1.4.0",
-    "universal-router": "^2.0.0",
     "webpack": "^2.1.0-beta.28",
     "webpack-dev-server": "^2.2.0-rc.0",
     "webpack-manifest-plugin": "^1.1.0",

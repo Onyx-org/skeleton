@@ -29,7 +29,7 @@ class Provider implements ControllerProviderInterface
             ->match('/hello/{name}', 'controller.home:helloAction')
             ->value('name', 'world')
             ->method('GET')
-            ->bind('test');
+            ->bind('hello');
 
         return $controllers;
     }
