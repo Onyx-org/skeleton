@@ -23,7 +23,7 @@ module.exports = function(publicPath = '/assets/') {
                     exclude: /(node_modules|bower_components)/,
                     loader: 'babel-loader',
                     query: {
-                        presets: ['es2015']
+                        presets: [ ['es2015', { modules: false } ] ],
                     }
                 },
                 {
