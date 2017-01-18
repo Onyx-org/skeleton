@@ -14,6 +14,13 @@
             <link rel="stylesheet" type="text/css" href="{{ asset }}">
         {% endfor %}
     {% endblock %}
+    {% if webpackChunkManifest is not empty %}
+        <script>
+        //<![CDATA[
+        window.webpackManifest = {{ webpackChunkManifest|raw }}
+        //]]>
+        </script>
+    {% endif %}
     <title>Onyx</title>
   </head>
 

@@ -12,8 +12,8 @@ module.exports = function(publicPath = '/assets/') {
         },
         output: {
             path: outputPath,
-            filename: '[name].js',
-            chunkFilename: '[name].[id].js',
+            filename: '[id].[name].js',
+            chunkFilename: '[id].[name].js',
             publicPath
         },
         module: {

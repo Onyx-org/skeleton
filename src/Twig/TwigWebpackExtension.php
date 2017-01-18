@@ -4,11 +4,18 @@ namespace __ONYX_Namespace\Twig;
 
 use __ONYX_Namespace\Webpack\WebpackManifest;
 
-class TwigWebpackExtension extends \Twig_Extension
+class TwigWebpackExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface
 {
     public function __construct(WebpackManifest $manifest)
     {
         $this->manifest = $manifest;
+    }
+
+    public function getGlobals()
+    {
+        return array(
+            'webpackChunkManifest' => json_encode($this->manifest->chunkManifest),
+        );
     }
 
     public function getFunctions()

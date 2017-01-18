@@ -3,11 +3,12 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var merge = require('webpack-merge');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var webpackCommon = require('./webpack.common.js')();
+var ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
 
 module.exports = merge(webpackCommon, {
     output: {
-        filename: '[name].[chunkhash].js',
-        chunkFilename: '[name].[id].[chunkhash].js'
+        filename: '[id].[name].[chunkhash].js',
+        chunkFilename: '[id].[name].[chunkhash].js'
     },
     module: {
         loaders: [
@@ -36,6 +37,10 @@ module.exports = merge(webpackCommon, {
     },
     devtool: 'source-map',
     plugins: [
+        new ChunkManifestPlugin({
+            filename: 'chunk-manifest.json',
+            manifestVariable: 'webpackManifest'
+        }),
         new webpack.optimize.CommonsChunkPlugin({
             // The order of this array matters
             name: 'common',
