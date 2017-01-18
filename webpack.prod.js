@@ -4,6 +4,7 @@ var merge = require('webpack-merge');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var webpackCommon = require('./webpack.common.js')();
 var ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
+var WebpackMd5Hash = require('webpack-md5-hash');
 
 module.exports = merge(webpackCommon, {
     output: {
@@ -37,6 +38,7 @@ module.exports = merge(webpackCommon, {
     },
     devtool: 'source-map',
     plugins: [
+        new WebpackMd5Hash(),
         new ChunkManifestPlugin({
             filename: 'chunk-manifest.json',
             manifestVariable: 'webpackManifest'
