@@ -14,7 +14,7 @@ app.registerRoute('home', HomeController);
 // The name "something.async" allows it not to be loaded in the template.
 app.registerRoute('hello', () => require.ensure([], function(require) {
     return require('Controllers/Hello');
-}, 'hello.async'));
+}, 'async'));
 
 document.addEventListener("DOMContentLoaded", () => {
     app.handle(document.getElementsByTagName('html')[0].dataset.route);
