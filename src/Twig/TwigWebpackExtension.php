@@ -22,6 +22,7 @@ class TwigWebpackExtension extends \Twig_Extension implements \Twig_Extension_Gl
     {
         return [
             new \Twig_SimpleFunction('webpackAssets', [$this, 'webpackAssets']),
+            new \Twig_SimpleFunction('webpackAsset', [$this, 'webpackAsset']),
         ];
     }
 
@@ -55,5 +56,15 @@ class TwigWebpackExtension extends \Twig_Extension implements \Twig_Extension_Gl
         }
 
         return $validFiles;
+    }
+
+    /**
+     * Returns the path for a single file
+     * @param  string $name Exact name of the file
+     * @return string       Path to the file
+     */
+    public function webpackAsset($name)
+    {
+        return $this->manifest->files[$name];
     }
 }

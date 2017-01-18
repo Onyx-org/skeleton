@@ -43,6 +43,11 @@ module.exports = merge(webpackCommon, {
             filename: 'chunk-manifest.json',
             manifestVariable: 'webpackManifest'
         }),
+        /* Split webpack code from files for easier and more reliable include in html files */
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'webpack',
+            minChunks: module => /node_modules\/webpack\//.test(module.resource)
+        }),
         new webpack.optimize.CommonsChunkPlugin({
             // The order of this array matters
             name: 'common',

@@ -53,10 +53,11 @@
         {% block content %}{% endblock %}
     </div>
     {% block javascript %}
-        {% for asset in webpackAssets(include='*.js', exclude='admin.js,main.js,*.async.js') %}
-            <script src="{{ asset }}"></script>
-        {% endfor %}
-        {% for asset in webpackAssets('main.js') %}
+        {# Make sure webpack is loaded first #}
+        {% if webpackAsset('webpack.js') is not empty %}
+            <script src="{{ webpackAsset('webpack.js') }}"></script>
+        {% endif %}
+        {% for asset in webpackAssets(include='*.js', exclude='webpack.js, admin.js, *async.js') %}
             <script src="{{ asset }}"></script>
         {% endfor %}
     {% endblock %}
