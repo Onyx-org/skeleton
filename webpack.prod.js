@@ -16,6 +16,7 @@ module.exports = merge(webpackCommon, {
             {
                 test: /\.scss$/,
                 loader: [
+                    // Compile sass and extract it into a css file of the same name
                     'file-loader?name=[name].[hash].css',
                     'extract-loader',
                     'css-loader',
@@ -39,35 +40,39 @@ module.exports = merge(webpackCommon, {
     devtool: 'source-map',
     plugins: [
         new WebpackMd5Hash(),
+        // Extract webpack chunk manifest (internal map of id => module used by webpack) for better caching
         new ChunkManifestPlugin({
             filename: 'chunk-manifest.json',
             manifestVariable: 'webpackManifest'
         }),
-        /* Split webpack code from files for easier and more reliable include in html files */
+        // Split webpack code from files for easier and more reliable include in html files
         new webpack.optimize.CommonsChunkPlugin({
             name: 'webpack',
             minChunks: module => /node_modules\/webpack\//.test(module.resource)
         }),
+        // Extract common code to common.js
         new webpack.optimize.CommonsChunkPlugin({
-            // The order of this array matters
             name: 'common',
             chunks: ['main', 'admin'],
             minChunks: 2
         }),
+        // Extract vendor code specific to main.js to vendor.main.js
         new webpack.optimize.CommonsChunkPlugin({
             name: 'vendor.main',
             chunks: ['main'],
             minChunks: module => /node_modules\//.test(module.resource)
         }),
+        // Extract vendor code specific to admin.js to vendor.admin.js
         new webpack.optimize.CommonsChunkPlugin({
             name: 'vendor.admin',
             chunks: ['admin'],
             minChunks: module => /node_modules\//.test(module.resource)
         }),
         new webpack.LoaderOptionsPlugin({
-            minimize: true,
+            minimize: true, // Enable minification
             debug: false
         }),
+        // Configure JS minification
         new webpack.optimize.UglifyJsPlugin({
             sourceMap: true,
             compress: {

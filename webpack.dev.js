@@ -11,8 +11,11 @@ module.exports = merge(webpackCommon(), {
             }
         ]
     },
+    // In dev mode, don't waste time generating a file for the sourcemap
+    // Inject them directly into the code (eval)
     devtool: 'eval-source-map',
     performance: {
+        // Hide webpack files optimization warnings
         hints: false
     }
 });

@@ -23,7 +23,15 @@ module.exports = function(publicPath = '/assets/') {
                     exclude: /(node_modules|bower_components)/,
                     loader: 'babel-loader',
                     query: {
-                        presets: [ ['es2015', { modules: false } ] ],
+                        presets: [
+                            [
+                                'es2015', // convert es2015
+                                {
+                                    // Disable native module to commonJS transformation so Tree Shaking works
+                                    modules: false
+                                }
+                            ],
+                        ],
                     }
                 },
                 {
@@ -38,13 +46,16 @@ module.exports = function(publicPath = '/assets/') {
             ]
         },
         resolve: {
+            // Look for modules in assets and node_modules
             modules: [path.resolve(__dirname, 'assets'), 'node_modules']
         },
         plugins: [
             new webpack.ProvidePlugin({
+                // Map the jQuery module to calls make to $, jQuery & window.jQuery
                 $: 'jquery',
                 jQuery: 'jquery',
                 'window.jQuery': 'jquery',
+                // Required by Bootstrap 4
                 'Tether': 'tether'
             }),
             new ManifestPlugin({
