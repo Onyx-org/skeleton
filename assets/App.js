@@ -12,10 +12,8 @@ export default class App {
     }
 
     handle(path) {
-        const controllerName = this.routes[path];
-
         if (typeof this.routes[path] === 'undefined') {
-            throw new Error('There is no controller for ' + path + ' declared in the route collection');
+            return;
         }
 
         let controller = this.findConstructor(this.routes[path]);
