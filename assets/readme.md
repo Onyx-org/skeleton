@@ -1,91 +1,89 @@
-# Gestion des assets
+# Asset management
 
 <!-- MarkdownTOC -->
 
 - [Webpack](#webpack)
-- [Commandes](#commandes)
-- [Exemple](#exemple)
+- [Commands](#commands)
+- [Example](#example)
 - [Routing](#routing)
     - [registerRoute\(routeName, callback\)](#registerrouteroutename-callback)
-        - [Route asynchrone](#route-asynchrone)
+        - [Asynchronous route](#asynchronous-route)
 - [Controllers](#controllers)
-- [Optimisation : Séparation des scripts](#optimisation--séparation-des-scripts)
+- [Optimization: Script splitting](#optimization-script-splitting)
     - [Entrypoints](#entrypoints)
-    - [Chargement asynchrone](#chargement-asynchrone)
-- [Comment fonctionne webpack avec l'application ?](#comment-fonctionne-webpack-avec-lapplication-)
+    - [Asynchronous loading](#asynchronous-loading)
+- [How does webpack communicates with the application?](#how-does-webpack-communicates-with-the-application)
 
 <!-- /MarkdownTOC -->
 
 ## Webpack
 
-- Packaging des assets utilisés et uniquement eux
-- Réécriture automatique des imports en fonction des fichiers publics créés
-- Séparation des librairies externes du code de l'application
-- Mise en commun du code réutilisable
-- Gestion du cache des navigateurs
-- Chargement de dépendances asynchrones
+- Packaging of used assets and nothing else
+- Detection of assets based on their use in the code
+- Automatic rewriting of files import urls acccording to final public path
+- Vendor and common code splitting
+- Optimized for browser caching
+- Asynchronous depedencies
 - Minification
-- Tree Shaking du code JS ES6+
-- Génération de sources maps
-- Développement en mode *livereload*
+- Tree shaking
+- Source maps
+- Dev server with automatic reload
 
 *@TODO*:
-- Gestion i18n
-- Lancement de tests
-- Optimisation des images
+- I18N
+- Tests
+- Image optimization
 
-## Commandes
+## Commands
 
-A éxécuter à la racine du projet :
+- **make webpack**: Builds assets for production
+- **make webpack-dev**: Builds assets for development (faster)
+- **make webpack-watch**: Builds assets and automatically rebuilds and reload if a file changes
 
-- **make webpack** : Compile les assets pour la production
-- **make webpack-dev** : Compile les assets pour le développement
-- **make webpack-watch** : Compile les assets pour le développement, recompile si un fichier est modifié et recharge automatiquement l'application
+## Example
 
-## Exemple
+All you need to be able to import any file into your javascript is to have a loader configured for that file type.
 
-Avec webpack, pour peu qu'un type de fichier dispose d'un loader adéquat il peut être importé dans le Javascript comme un module.
-
-Les imports cherchent dans les dossiers suivants :
+Webpack looks into those folders for modules :
 - /assets
 - /node_modules
 
 **main.js**
 ```js
-// Polyfills nécessaire au bon fonctionnement de webpack
+// Polyfills required by webpack
 import 'core-js/es6/promise';
 import 'core-js/es6/object';
 import 'core-js/es6/function';
-// Import de bootstrap depuis node_modules. Le fichier package.json sera lu pour déterminer quoi importer.
+// Import bootstrap from node_modules
 import 'bootstrap';
-// Fichier référencant tous les styles externes
+// Sass file for vendor stuff
 import 'sass/vendor.scss';
-// Css de l'application
+// Index sass file for the application
 import 'sass/main.scss';
-// Classe gérant le chargement des controllers
+// App class handles the routing
 import App from 'App';
-// Chargement d'un controlleur
+// Importing a controller
 import HomeController from 'Controllers/Home';
 
 let app = new App();
 
-// Laision entre la route home et le controller HomeController
+// Binding home route to HomeController
 app.registerRoute('home', HomeController);
 
-// Controlleur séparé du bundle principal dans son fichier par require.ensure
+// Binging hello route to asynchronously loaded HelloController
 app.registerRoute('hello', () => require.ensure([], function(require) {
     return require('Controllers/Hello');
-}, 'async'));
+}, 'async')); // HelloController will be loaded from async.js file
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Exécution du controller de la route courante
+    // Executing the controller matching the current route
     app.handle(document.getElementsByTagName('html')[0].dataset.route);
 });
 ```
 
 ## Routing
 
-Un simple router est mis en place pour charger le controller adéquat pour la page courante. Basé sur l'article [DOM-based Routing](https://www.paulirish.com/2009/markup-based-unobtrusive-comprehensive-dom-ready-execution/). C'est un router pour applications basées sur des changements de page avec rafraichissement.
+The router executes a controller based on a route ID parameter set by the backend in the HTML. This is a simple [DOM-Based Routing](https://www.paulirish.com/2009/markup-based-unobtrusive-comprehensive-dom-ready-execution/) for multi pages applications.
 
 **main.js**
 ```js
@@ -97,30 +95,31 @@ let app = new App();
 app.registerRoute('home', HomeController);
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Exécution du controller de la route courante
+    // Routing based on html[data-route] attribute
     app.handle(document.getElementsByTagName('html')[0].dataset.route);
 });
 ```
-Le router se base sur un attribut data placé sur la balise `html` qui renseigne le nom de la route tel que le backend l'a déclaré.
 
 ### registerRoute(routeName, callback)
-- **routeName** : Le nom de la route tel que le backend l'a déclaré
-- **callback** : Un constructeur (class|function) ou une fonction qui renvoie une `Promise` pour un constructeur (asynchrone)
+- **routeName**: The name of the route
+- **callback**: A constructor (class|function) or a function that return a Promise wrapping a constructor
 
-#### Route asynchrone
+#### Asynchronous route
 
-Vous pouvez déclarer un controller de manière asynchrone avec `require.ensure`.
-Préfixez le nom du fichier généré par **async** pour qu'il soit automatiquement ignoré lors de l'injection dans le html.
+You can register a Route with an Asynchronous Promise. The Promise must return a valid `Constructor`.
 
+Using `require.ensure`:
 ```js
 app.registerRoute('hello', () => require.ensure([], function(require) {
     return require('Controllers/Hello');
 }, 'async'));
 ```
 
+See [Asynchronous loading](#asynchronous-loading)
+
 ## Controllers
 
-L'application permet la création d'un `Controller` par `Route`. Un controller est une fonction ou une classe.
+A controller is either a `Class` or a `Function`.
 
 ```js
 export default myController {
@@ -137,20 +136,20 @@ export default myController {
 
 ```js
 export default function sayHello() {
-    // jQuery est disponible de façon globale
+    // jQuery globally available
     $('html').text('Hello');
 }
 ```
 
-## Optimisation : Séparation des scripts
+## Optimization: Script splitting
 
-Webpack package tous les scripts en un seul fichier. Cela peut potentiellement ralentir le premier chargement en incluant trop de fichiers qui ne sont pas immédiatement utiles. Pour se faire nous pouvons séparer notre applications en plusieurs fichiers.
+Webpack bundles everything in one file. You may find that this needlessly slows down the first load and that it would be better to split the project into multiple files.
 
 ### Entrypoints
 
-Webpack génère un fichier par entrypoint déclaré. Si vous souhaitez créer un nouveau fichier pour une page différente plus tôt que d'utiliser un entrypoint commun vous pouvez ajouter le vôtre.
+Webpack generates one file per declared `entrypoint`. You can create a new `entrypoint` to separate a part of your project.
 
-Dans cet exemple 2 entrypoints sont créés. Un pour la partie public du site et l'autre pour la partie administrative.
+In the example below we create 2 entrypoints. One for the public area and one for the admin area.
 
 **webpack.common.js**
 ```js
@@ -162,7 +161,7 @@ entry: {
 ...
 ```
 
-Webpack essaie de mettre en commun le code entre les différents entrypoints en extrayant les modules commun. Mettez à jour la configuration pour que le nouveau entrypoint soit pris en compte.
+Webpack is configured to group common dependencies into a common chunk file for better performance. You need to tell webpack about your new entrypoint so it can take it into account.
 
 **webpack.prod.js**
 ```js
@@ -170,19 +169,19 @@ plugins: [
         ...
         new webpack.optimize.CommonsChunkPlugin({
             name: 'common',
-            chunks: ['main', 'admin'], // Mettez à jour cette ligne avec votre entrypoint
+            chunks: ['main', 'admin'], // Update this line with your entrypoint
             minChunks: 2
         }),
         ...
     ]
 ```
 
-Si votre entrypoint utilise beaucoup de dépendances externes il peut être intéressant de séparer ces dépendances du fichier que webpack génère pour avoir une meilleure gestion du cache.
+If your entrypoint uses a fair amount of external dependencies it might be useful to bundle them separately to get better browser caching.
 
 ```js
 plugins: [
         ...
-        // Doit être ajouté après des chunk common ou vendor*
+        // This must be placed after the global common chunk*
         new webpack.optimize.CommonsChunkPlugin({
             name: 'vendor.admin',
             chunks: ['admin'],
@@ -192,28 +191,26 @@ plugins: [
     ]
 ```
 
-*L'ordre de la création des `CommonsChunkPlugin` est important. Si un module a déjà été extrait par un appel `CommonsChunkPlugin` il ne pourra plus l'être par un suivant (à moins qu'il ne soit configuré pour extraire depuis un chunk `CommonsChunkPlugin` préalablement généré).
+*The order in which `CommonsChunkPlugin` are declared is important. A module that has already been extracted by on `CommonsChunkPlugin` cannot be extracted anymore (unless the `CommonsChunkPlugin` call is configured to extract from previously generated `CommonsChunkPlugin` chunks).
 
-### Chargement asynchrone
+### Asynchronous loading
 
-Vous n'êtes pas obligé de créer de nouveaux entrypoints à chaque fois que vous jugez qu'une partie de votre code est trop lourde pour être chargée dès le premier appel.
-
-Webpack permet de séparer une dépendance pour la charger en asynchrone directement depuis votre code.
+Webpack allows you to create a separate file when requiring a dependency. No need here to define a new entrypoint.
 
 **[require.ensure(dependencies: String[], callback: function(require), chunkName: String)](https://webpack.js.org/guides/code-splitting-require/#require-ensure-)**
 
 ```js
-// Le module b sera séparé dans son propre fichier
+// The module b will be separated to his own file
 require.ensure([], function(require){
     require('b');
 });
 
-// Le module b sera séparé dans son fichier (chunk) mon-super-fichier-async
+// The module b will be separatd to the file named mon-super-fichier-async
 require.ensure([], function(require){
     require('b');
 }, 'mon-super-fichier-async');
 
-// require.ensure renvoie un objet Promise
+// require.ensure returns a Promise
 require.ensure([], function(require){
     return require('google-maps');
 }, 'maps-async').then(function(GoogleMapsLoader) {
@@ -222,7 +219,7 @@ require.ensure([], function(require){
     });
 });
 
-// ou
+// Equivalent to
 require.ensure([], function(require){
     var GoogleMapsLoader = require('google-maps');
     GoogleMapsLoader.load(function(google) {
@@ -231,31 +228,34 @@ require.ensure([], function(require){
 }, 'maps-async');
 ```
 
-Si vous utilisez `require.ensure` assurez vous que le fichier js généré n'est pas inclus vos vues et laissez webpack s'occuper de le charger quand il en a besoin.
+When you use `require.ensure` you must make sure that you do not add the generated js file to the HTML. Webpack will load the file by himself when needed.
 ```twig
 {% for asset in webpackAssets(include='*.js', exclude='my-async-file') %}
     <script src="{{ asset }}"></script>
 {% endfor %}
 ```
 
-**Le projet est configuré pour exclure tout fichier nommé async ou terminant par async**. Nommez votre fichier **async** ou **nom.async** et il ne sera pas ajouté dans le html.
-```
+**The project is configured to exclude any file that ends with async**.
+Suffix your async dependencies chunk filename with async to automatically exclude them from the HTML.
+```twig
 {% for asset in webpackAssets(include='*.js', exclude='webpack.js, *async.js') %}
     <script src="{{ asset }}"></script>
 {% endfor %}
 ```
 
-## Comment fonctionne webpack avec l'application ?
+## How does webpack communicates with the application?
 
-Webpack génère un manifeste de tous les fichiers qu'il a généré lors de la compilation. Ce fichier est lu par l'application et est utilisé pour insèrer les différents fichiers dans le layout principal.
+Webpack generates a manifest of all the files it has generated. That file is read by the backend and it is used to inject the necessary files into the HTML.
 
-- [WebpackManifest](../src/Webpack/WebpackManifest.php) : Expose le service `webpack_manifest` permettant de parcourir les assets générés par webpack
-- [TwigWebpackExtension](../src/Twig/TwigWebpackExtension.php) : Expose des variables et fonctions permettant aux vues twig d'utiliser les assets :
-    + **webpackAssets(include, exclude)**<br>Fonction twig permettant de sélectionner des assets à partir de sélecteurs glob.
-    + **webpackAsset(name)**<br>Fonction twig permettant de sélectionner un asset par son nom (chunkname)
-    + **webpackChunkManifest**<br>Variable globale donnée à twig contenant un manifeste des modules gérés par Webpack. Webpack en a besoin pour son utilisation en production.
+The backend handles the manifest with the following classes:
 
-*Utilisation du webpackChunkManifest*
+- [WebpackManifest](../src/Webpack/WebpackManifest.php) : `webpack_manifest` service provides an object representing the loaded manifest
+- [TwigWebpackExtension](../src/Twig/TwigWebpackExtension.php) : Provides variables and functions so the views can exploit the manifest:
+    + **webpackAssets(include, exclude)**<br>Twig function to select assets with a glob selector
+    + **webpackAsset(name)**<br>Twig function to select assets by their chunk name
+    + **webpackChunkManifest**<br>Global variable exposing the webpack internal module manifest. Webpack needs this manifest injected into the view in production.
+
+*Injecting the webpackChunkManifest*
 ```twig
 {% if webpackChunkManifest is not empty %}
     <script>
@@ -266,7 +266,7 @@ Webpack génère un manifeste de tous les fichiers qu'il a généré lors de la 
 {% endif %}
 ```
 
-*Chargement des fichiers javascripts*
+*Injecting javascript files*
 ```twig
 {# Make sure webpack is loaded first #}
 {% if webpackAsset('webpack.js') is not empty %}
