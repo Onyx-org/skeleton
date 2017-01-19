@@ -105,4 +105,4 @@ down:
 build:
 	docker-compose -f docker/docker-compose.yml build
 
-.PHONY: install config install-deps install-back-deps install-front-deps update-deps phpunit clean remove-deps uninstall dumpautoload
+.PHONY: install config install-deps install-back-deps install-front-deps update-deps phpunit clean remove-deps uninstall dumpautoload up stop down build webpack webpack-dev webpack-watch npm install-front-deps
