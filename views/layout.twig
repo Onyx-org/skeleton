@@ -56,7 +56,7 @@
         {% if webpackAsset('webpack.js') is not empty %}
             <script src="{{ webpackAsset('webpack.js') }}"></script>
         {% endif %}
-        {% for asset in webpackAssets(include='*.js', exclude='webpack.js, *admin.js, *async.js') %}
+        {% for asset in webpackAssets(includePattern='*.js', excludePattern='webpack.js, *admin.js, *async.js') %}
             <script src="{{ asset }}"></script>
         {% endfor %}
     {% endblock %}
