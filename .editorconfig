@@ -12,7 +12,7 @@ indent_style = space
 charset = utf-8
 
 # Tab indentation (no size specified)
-[Makefile]
+[{Makefile,*.mk}]
 indent_style = tab
 
 # Matches the exact files either package.json or .travis.yml
