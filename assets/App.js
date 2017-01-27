@@ -22,23 +22,7 @@ export default class App {
             throw Error('Could not find a valid constructor for route ' + path);
         }
 
-        let controllerInstance = new controller();
-
-        if (controllerInstance.constructor.name === 'Promise') {
-            return controllerInstance.then((data) => {
-                let promisedController = this.findConstructor(data);
-
-                if (!promisedController) {
-                    throw Error('Promise for route ' + path + ' did not return a constructor');
-                }
-
-                this.routes[path] = promisedController;
-
-                return this.handle(path);
-            });
-        }
-
-        return controllerInstance;
+        return new controller();
     }
 
     findConstructor(data) {

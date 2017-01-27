@@ -7,7 +7,6 @@
 - [Example](#example)
 - [Routing](#routing)
     - [registerRoute\(routeName, callback\)](#registerrouteroutename-callback)
-        - [Asynchronous route](#asynchronous-route)
 - [Controllers](#controllers)
 - [Optimization: Script splitting](#optimization-script-splitting)
     - [Entrypoints](#entrypoints)
@@ -102,20 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 ### registerRoute(routeName, callback)
 - **routeName**: The name of the route
-- **callback**: A constructor (class|function) or a function that return a Promise wrapping a constructor
-
-#### Asynchronous route
-
-You can register a Route with an Asynchronous Promise. The Promise must return a valid `Constructor`.
-
-Using `require.ensure`:
-```js
-app.registerRoute('hello', () => require.ensure([], function(require) {
-    return require('Controllers/Hello');
-}, 'async'));
-```
-
-See [Asynchronous loading](#asynchronous-loading)
+- **callback**: A constructor (class|function)
 
 ## Controllers
 
@@ -230,7 +216,7 @@ require.ensure([], function(require){
 
 When you use `require.ensure` you must make sure that you do not add the generated js file to the HTML. Webpack will load the file by himself when needed.
 ```twig
-{% for asset in webpackAssets(include='*.js', exclude='my-async-file') %}
+{% for asset in webpackAssets(includePattern='*.js', excludePattern='my-async-file') %}
     <script src="{{ asset }}"></script>
 {% endfor %}
 ```
@@ -238,7 +224,7 @@ When you use `require.ensure` you must make sure that you do not add the generat
 **The project is configured to exclude any file that ends with async**.
 Suffix your async dependencies chunk filename with async to automatically exclude them from the HTML.
 ```twig
-{% for asset in webpackAssets(include='*.js', exclude='webpack.js, *async.js') %}
+{% for asset in webpackAssets(includePattern='*.js', excludePattern='webpack.js, *async.js') %}
     <script src="{{ asset }}"></script>
 {% endfor %}
 ```
@@ -249,7 +235,7 @@ Webpack generates a manifest of all the files it has generated. That file is rea
 
 The backend handles the manifest with the following classes:
 
-- [WebpackManifest](../src/Webpack/WebpackManifest.php) : `webpack_manifest` service provides an object representing the loaded manifest
+- [WebpackManifest](../src/Webpack/WebpackManifest.php) : `webpack.manifest` service provides an object representing the loaded manifest
 - [TwigWebpackExtension](../src/Twig/TwigWebpackExtension.php) : Provides variables and functions so the views can exploit the manifest:
     + **webpackAssets(include, exclude)**<br>Twig function to select assets with a glob selector
     + **webpackAsset(name)**<br>Twig function to select assets by their chunk name
@@ -272,7 +258,7 @@ The backend handles the manifest with the following classes:
 {% if webpackAsset('webpack.js') is not empty %}
     <script src="{{ webpackAsset('webpack.js') }}"></script>
 {% endif %}
-{% for asset in webpackAssets(include='*.js', exclude='webpack.js, *async.js') %}
+{% for asset in webpackAssets(includePattern='*.js', excludePattern='webpack.js, *async.js') %}
     <script src="{{ asset }}"></script>
 {% endfor %}
 ```
