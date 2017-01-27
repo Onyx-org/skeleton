@@ -23,7 +23,6 @@ Download deps, configure, ...
 
 Launching web server (choose your port with WEB_PORT parameter, 80 if omitted)
 ```bash
- cd docker
  make WEB_PORT=82 up
 ```
 
