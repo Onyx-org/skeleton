@@ -31,7 +31,7 @@ class Application extends \Onyx\Application
         $this['twig.path.manager']->addPath(array(
             $this['root.path'] . 'views/',
         ));
-        $this['twig']->addExtension(new TwigWebpackExtension($this['webpack_manifest']));
+        $this['twig']->addExtension(new TwigWebpackExtension($this['webpack.manifest']));
     }
 
     protected function mountControllerProviders()

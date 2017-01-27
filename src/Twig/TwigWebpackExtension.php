@@ -14,7 +14,7 @@ class TwigWebpackExtension extends \Twig_Extension implements \Twig_Extension_Gl
     public function getGlobals()
     {
         return array(
-            'webpackChunkManifest' => json_encode($this->manifest->chunkManifest),
+            'webpackChunkManifest' => $this->manifest->getChunkManifest(),
         );
     }
 
@@ -34,13 +34,13 @@ class TwigWebpackExtension extends \Twig_Extension implements \Twig_Extension_Gl
      */
     public function webpackAssets($include = null, $exclude = null)
     {
-        $validFiles = $this->manifest->files;
+        $validFiles = $this->manifest->getFiles();
 
         if (!empty($include)) {
             $validFiles = [];
             $includePatterns = explode(',', $include);
             foreach ($includePatterns as $pattern) {
-                $validFiles += array_filter($this->manifest->files, function($fileName) use ($pattern) {
+                $validFiles += array_filter($this->manifest->getFiles(), function($fileName) use ($pattern) {
                     return fnmatch(trim($pattern), $fileName, FNM_CASEFOLD);
                 }, ARRAY_FILTER_USE_KEY);
             }
@@ -65,6 +65,6 @@ class TwigWebpackExtension extends \Twig_Extension implements \Twig_Extension_Gl
      */
     public function webpackAsset($name)
     {
-        return $this->manifest->files[$name];
+        return $this->manifest->getFiles()[$name];
     }
 }
