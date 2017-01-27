@@ -48,37 +48,27 @@ vendor/bin/phpunit: install-deps
 
 install-front-deps: npm
 
-npm:
-	docker run -it --rm \
+npm = docker run -it --rm \
 		-v ${ONYX_DIR}:/usr/src/app \
 		-u ${USER_ID}:${GROUP_ID} \
-		-w /usr/src/app node:7 \
-		npm install
+		-w /usr/src/app \
+		${2} \
+		node:7 \
+		npm ${1}
+
+npm:
+	$(call npm, install)
 
 webpack:
 	rm -f www/assets/*
-	docker run -it --rm \
-		-v ${ONYX_DIR}:/usr/src/app \
-		-u ${USER_ID}:${GROUP_ID} \
-		-w /usr/src/app node:7 \
-		npm run build
+	$(call npm, run build)
 
 webpack-dev:
 	rm -f www/assets/*
-	docker run -it --rm \
-		-v ${ONYX_DIR}:/usr/src/app \
-		-u ${USER_ID}:${GROUP_ID} \
-		-w /usr/src/app node:7 \
-		npm run build:dev
+	$(call npm, run build:dev)
 
 webpack-watch:
-	docker run -it --rm \
-		-e "DEV_SERVER_PORT=${DEV_SERVER_PORT}" \
-		-p "${DEV_SERVER_PORT}:${DEV_SERVER_PORT}" \
-		-u ${USER_ID}:${GROUP_ID} \
-		-v ${ONYX_DIR}:/usr/src/app \
-		-w /usr/src/app node:7 \
-		npm run watch
+	$(call npm, run watch, -e "DEV_SERVER_PORT=${DEV_SERVER_PORT}" -p "${DEV_SERVER_PORT}:${DEV_SERVER_PORT}")
 
 uninstall: clean remove-deps
 	rm -rf www/assets
