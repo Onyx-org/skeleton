@@ -11,6 +11,8 @@ export GROUP_ID
 
 -include vendor/onyx/core/wizards.mk
 include qa.mk
+include docker.mk
+include npm.mk
 
 all: install phpunit
 
@@ -49,28 +51,6 @@ vendor/bin/phpunit: install-deps
 
 install-front-deps: npm
 
-npm = docker run -it --rm \
-		-v ${ONYX_DIR}:/usr/src/app \
-		-u ${USER_ID}:${GROUP_ID} \
-		-w /usr/src/app \
-		${2} \
-		node:7 \
-		npm ${1}
-
-npm:
-	$(call npm, install)
-
-webpack:
-	rm -f www/assets/*
-	$(call npm, run build)
-
-webpack-dev:
-	rm -f www/assets/*
-	$(call npm, run build:dev)
-
-webpack-watch:
-	$(call npm, run watch, -e "DEV_SERVER_PORT=${DEV_SERVER_PORT}" -p "${DEV_SERVER_PORT}:${DEV_SERVER_PORT}")
-
 uninstall: clean remove-deps
 	rm -rf www/assets
 	rm -f composer.lock
@@ -84,16 +64,4 @@ remove-deps:
 	rm -rf vendor
 	rm -rf node_modules
 
-up:
-	docker-compose -f docker/docker-compose.yml up -d
-
-stop:
-	docker-compose -f docker/docker-compose.yml stop
-
-down:
-	docker-compose -f docker/docker-compose.yml down
-
-build:
-	docker-compose -f docker/docker-compose.yml build
-
-.PHONY: install config install-deps install-back-deps install-front-deps update-deps phpunit clean remove-deps uninstall dumpautoload up stop down build webpack webpack-dev webpack-watch npm install-front-deps
+.PHONY: install config install-deps install-back-deps install-front-deps update-deps phpunit clean remove-deps uninstall dumpautoload
