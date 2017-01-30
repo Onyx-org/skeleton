@@ -41,30 +41,33 @@ class WebpackManifest
         return $this->chunkManifest;
     }
 
-    private function setChunkManifest($chunkManifestPath): void
+    private function setChunkManifest(string $chunkManifestPath): void
     {
         if (!is_file($chunkManifestPath))
         {
             return;
         }
 
-        $JSONChunkManifest = file_get_contents($chunkManifestPath);
-
-        if (!$JSONChunkManifest)
-        {
-            throw new \Exception(sprintf('Could not open file %s', $chunkManifestPath));
-        }
-
-        $this->chunkManifest = $JSONChunkManifest;
+        $this->chunkManifest = $this->getFileContent($chunkManifestPath);
     }
 
-    private function loadManifest($manifestPath): string
+    private function loadManifest(string $manifestPath): string
     {
-        $JSONManifest = file_get_contents($manifestPath);
-
-        if (!$JSONManifest)
+        if (!is_file($manifestPath))
         {
             throw new \Exception(sprintf('The file %s could not be found. Did you forget to run webpack?', $manifestPath));
+        }
+
+        return $this->getFileContent($manifestPath);
+    }
+
+    private function getFileContent(string $path): string
+    {
+        $JSONManifest = file_get_contents($path);
+
+        if ($JSONManifest === false)
+        {
+            throw new \Exception(sprintf('Something went wrong while trying to read the file %s', $path));
         }
 
         return $JSONManifest;
