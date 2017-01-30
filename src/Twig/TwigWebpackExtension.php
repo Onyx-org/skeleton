@@ -76,6 +76,13 @@ class TwigWebpackExtension extends \Twig_Extension implements \Twig_Extension_Gl
      */
     public function webpackAsset(string $name): ?string
     {
-        return $this->manifest->getFiles()[$name];
+        $files = $this->manifest->getFiles();
+
+        if (!isset($files[$name]))
+        {
+            return null;
+        }
+
+        return $files[$name];
     }
 }
