@@ -74,7 +74,7 @@ class TwigWebpackExtension extends \Twig_Extension implements \Twig_Extension_Gl
      * @param  string $name Exact name of the file
      * @return string       Path to the file
      */
-    public function webpackAsset($name): ?string
+    public function webpackAsset(string $name): ?string
     {
         return $this->manifest->getFiles()[$name];
     }
