@@ -23,4 +23,11 @@ class Controller
     {
         return $this->render('home.twig');
     }
+
+    public function helloAction($name)
+    {
+        return $this->render('hello.twig', [
+            'name' => $name
+        ]);
+    }
 }

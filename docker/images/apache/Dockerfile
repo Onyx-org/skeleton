@@ -1,4 +1,4 @@
-FROM php:7.0-apache
+FROM php:7.1-apache
 
 RUN echo 'APT::Install-Recommends "0";' >>/etc/apt/apt.conf.d/99-recommends && \
     echo 'APT::Install-Suggests "0";' >>/etc/apt/apt.conf.d/99-suggests

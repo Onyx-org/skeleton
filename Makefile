@@ -1,17 +1,25 @@
+WEB_PORT=80
 ONYX_DIR=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 USER_ID=$(shell id -u)
 GROUP_ID=$(shell id -g)
+DEV_SERVER_PORT=$(shell echo $(WEB_PORT)+1000 | bc)
+
+export WEB_PORT
+export DEV_SERVER_PORT
+export USER_ID
+export GROUP_ID
 
 -include vendor/onyx/core/wizards.mk
 include qa.mk
+include docker.mk
+include npm.mk
 
 all: install phpunit
 
-install: var install-deps config gulp
+install: var install-deps config webpack
 
 var:
 	mkdir -m a+w var
-
 
 config: karma
 	./karma hydrate
@@ -25,7 +33,7 @@ karma:
 install-deps: install-back-deps install-front-deps
 
 install-back-deps: composer.phar
-	php composer.phar install
+	php composer.phar install --ignore-platform-reqs
 
 update-back-deps: composer.phar
 	php composer.phar update
@@ -41,36 +49,7 @@ phpunit: vendor/bin/phpunit
 
 vendor/bin/phpunit: install-deps
 
-install-front-deps: bower
-
-create-bower-image:
-	docker build -q --build-arg UID=${USER_ID} -t onyx/bower docker/images/packaging/bower/
-
-clean-bower-image:
-	docker rmi onyx/bower
-
-bower: create-bower-image
-	docker run -t -i --rm \
-	           -v ${ONYX_DIR}:/home/bower \
-	           -u ${USER_ID}:${GROUP_ID} \
-	           onyx/bower bower --config.interactive=false install
-
-create-gulp-image:
-	docker build -q --build-arg UID=${USER_ID} -t onyx/gulp docker/images/packaging/gulp/
-
-clean-gulp-image:
-	docker rmi onyx/gulp
-
-gulp = docker run -t -i --rm \
-	              -v ${ONYX_DIR}/gulpfile.js:/home/gulp/gulpfile.js \
-	              -v ${ONYX_DIR}:/home/gulp/project \
-	              -u ${USER_ID}:${GROUP_ID} \
-	              onyx/gulp gulp $1
-
-gulp: create-gulp-image
-	$(call gulp, sass)
-	$(call gulp, minify)
-	$(call gulp, publish)
+install-front-deps: npm
 
 uninstall: clean remove-deps
 	rm -rf www/assets
@@ -80,10 +59,9 @@ uninstall: clean remove-deps
 clean:
 	rm -f karma
 	rm -f composer.phar
-	-docker rmi onyx/bower onyx/gulp
 
 remove-deps:
 	rm -rf vendor
-	rm -rf bower_components
+	rm -rf node_modules
 
-.PHONY: install config install-deps install-back-deps install-front-deps update-deps phpunit bower create-bower-image gulp create-gulp-image clean clean-bower-image clean-gulp-image remove-deps uninstall dumpautoload
+.PHONY: install config install-deps install-back-deps install-front-deps update-deps phpunit clean remove-deps uninstall dumpautoload
