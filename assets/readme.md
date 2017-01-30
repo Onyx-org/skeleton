@@ -69,11 +69,6 @@ let app = new App();
 // Binding home route to HomeController
 app.registerRoute('home', HomeController);
 
-// Binging hello route to asynchronously loaded HelloController
-app.registerRoute('hello', () => require.ensure([], function(require) {
-    return require('Controllers/Hello');
-}, 'async')); // HelloController will be loaded from async.js file
-
 document.addEventListener("DOMContentLoaded", () => {
     // Executing the controller matching the current route
     app.handle(document.getElementsByTagName('html')[0].dataset.route);
