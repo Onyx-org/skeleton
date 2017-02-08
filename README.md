@@ -9,7 +9,7 @@ PHP application skeleton based on Silex 2. Promote framework agnostic conception
 ### Requirements
 
 * docker, executable by your user (see official documentation to set it up)
-* php >= 5.6
+* php >= 7.1.0
 
 ### Installation
 
