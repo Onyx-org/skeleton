@@ -3,7 +3,7 @@ FROM node
 ARG UID=1000
 
 RUN npm install -g gulp && \
-    adduser gulp --quiet --uid ${UID} --home /home/gulp --disabled-password
+    useradd gulp --non-unique --uid ${UID} --home-dir /home/gulp
 
 WORKDIR /home/gulp
 
