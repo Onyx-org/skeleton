@@ -15,7 +15,7 @@ PHP application skeleton based on Silex 2. Promote framework agnostic conception
 
 Download deps, configure, ...
 ```bash
- make install
+ make
  make wizard-set-namespace
 ```
 **Note :** In *wizard-set-namespace*, use **::** as namespace delimiter (ex: *Onyx::Cool::App*)

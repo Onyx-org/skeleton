@@ -1,23 +1,54 @@
+###############################################################################
+# ONYX Main Makefile
+###############################################################################
+
 ONYX_DIR=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+
 USER_ID=$(shell id -u)
 GROUP_ID=$(shell id -g)
-COMPOSER_ARGS=--ignore-platform-reqs
 
 export USER_ID
 export GROUP_ID
 
+# Spread cli arguments for composer & phpunit
+ifneq (,$(filter $(firstword $(MAKECMDGOALS)),composer phpunit))
+    CLI_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+    $(eval $(CLI_ARGS):;@:)
+endif
+
+# Add ignore platform reqs for composer install & update
+COMPOSER_ARGS=
+ifeq (composer, $(firstword $(MAKECMDGOALS)))
+    ifneq (,$(filter install update,$(CLI_ARGS)))
+        COMPOSER_ARGS=--ignore-platform-reqs
+    endif
+endif
+
+#------------------------------------------------------------------------------
+# Default target
+#------------------------------------------------------------------------------
+init: var install-deps config gulp
+
+#------------------------------------------------------------------------------
+# Includes
+#------------------------------------------------------------------------------
 -include vendor/onyx/core/wizards.mk
 -include docker/helpers.mk
 include qa.mk
 
-all: install phpunit
-
-install: var install-deps config gulp
+#------------------------------------------------------------------------------
+# High level targets
+#------------------------------------------------------------------------------
+install-deps: composer-install bower
 
 var:
 	mkdir -m a+w var
 
+.PHONY: install install-deps config composer composer-install composer-dumpautoload phpunit bower create-bower-image clean-bower-image gulp create-gulp-image clean-gulp-image uninstall clean remove-deps
 
+#------------------------------------------------------------------------------
+# Karma
+#------------------------------------------------------------------------------
 config: karma
 	./karma hydrate
 
@@ -27,27 +58,32 @@ karma:
 	wget -O karma -q https://github.com/Niktux/karma/releases/download/${LATEST_VERSION}/karma.phar
 	chmod 0755 karma
 
-install-deps: install-back-deps install-front-deps
-
-install-back-deps: composer.phar
-	php composer.phar install $(COMPOSER_ARGS)
-
-update-back-deps: composer.phar
-	php composer.phar update $(COMPOSER_ARGS)
+#------------------------------------------------------------------------------
+# Composer
+#------------------------------------------------------------------------------
+composer: composer.phar
+	php composer.phar $(CLI_ARGS) $(COMPOSER_ARGS)
 
 composer.phar:
 	curl -sS https://getcomposer.org/installer | php
 
-dumpautoload: composer.phar
+composer-install:
+	php composer.phar install --ignore-platform-reqs
+
+composer-dumpautoload: composer.phar
 	php composer.phar dumpautoload
 
+#------------------------------------------------------------------------------
+# PHPUnit
+#------------------------------------------------------------------------------
 phpunit: vendor/bin/phpunit
-	vendor/bin/phpunit
+	docker run -it --rm --name phpunit -v ${ONYX_DIR}:/usr/src/onyx -w /usr/src/onyx php:7.1-cli vendor/bin/phpunit $(CLI_ARGS)
 
-vendor/bin/phpunit: install-deps
+vendor/bin/phpunit: composer-install
 
-install-front-deps: bower
-
+#------------------------------------------------------------------------------
+# Bower
+#------------------------------------------------------------------------------
 create-bower-image:
 	docker build -q --build-arg UID=${USER_ID} -t onyx/bower docker/images/packaging/bower/
 
@@ -60,6 +96,9 @@ bower: create-bower-image
 	           -u ${USER_ID}:${GROUP_ID} \
 	           onyx/bower bower --config.interactive=false install
 
+#------------------------------------------------------------------------------
+# Gulp
+#------------------------------------------------------------------------------
 create-gulp-image:
 	docker build -q --build-arg UID=${USER_ID} -t onyx/gulp docker/images/packaging/gulp/
 
@@ -77,6 +116,9 @@ gulp: create-gulp-image
 	$(call gulp, minify)
 	$(call gulp, publish)
 
+#------------------------------------------------------------------------------
+# Cleaning targets
+#------------------------------------------------------------------------------
 uninstall: clean remove-deps
 	rm -rf www/assets
 	rm -f composer.lock
@@ -90,5 +132,3 @@ clean:
 remove-deps:
 	rm -rf vendor
 	rm -rf bower_components
-
-.PHONY: install config install-deps install-back-deps install-front-deps update-deps phpunit bower create-bower-image gulp create-gulp-image clean clean-bower-image clean-gulp-image remove-deps uninstall dumpautoload
