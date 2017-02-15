@@ -1,8 +1,8 @@
 WEB_PORT=80
 
 export WEB_PORT
-export USER_ID=$(id -u)
-export GROUP_ID=$(id -g)
+export USER_ID=$(shell id -u)
+export GROUP_ID=$(shell id -g)
 
 up:
 	docker-compose up -d
