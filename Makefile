@@ -3,7 +3,11 @@ USER_ID=$(shell id -u)
 GROUP_ID=$(shell id -g)
 COMPOSER_ARGS=--ignore-platform-reqs
 
+export USER_ID
+export GROUP_ID
+
 -include vendor/onyx/core/wizards.mk
+-include docker/helpers.mk
 include qa.mk
 
 all: install phpunit
