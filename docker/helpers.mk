@@ -1,0 +1,17 @@
+WEB_PORT=80
+
+export WEB_PORT
+
+up:
+	docker-compose -f docker/docker-compose.yml up -d
+
+build:
+	docker-compose -f docker/docker-compose.yml build
+
+rebuild: build up
+
+down:
+	docker-compose -f docker/docker-compose.yml down
+
+connect:
+	docker exec --tty -i onyx-frontend /bin/bash
