@@ -27,7 +27,7 @@ endif
 #------------------------------------------------------------------------------
 # Default target
 #------------------------------------------------------------------------------
-init: var install-deps config gulp
+init: var install-deps config gulp gitignore
 
 #------------------------------------------------------------------------------
 # Includes
@@ -132,3 +132,6 @@ clean:
 remove-deps:
 	rm -rf vendor
 	rm -rf bower_components
+
+gitignore:
+	sed '/^composer.lock #.*$$/d' -i .gitignore
