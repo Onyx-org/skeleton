@@ -67,7 +67,7 @@ composer: composer.phar
 composer.phar:
 	curl -sS https://getcomposer.org/installer | php
 
-composer-install:
+composer-install: composer.phar
 	php composer.phar install --ignore-platform-reqs
 
 composer-dumpautoload: composer.phar
