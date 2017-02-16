@@ -3,7 +3,6 @@ services:
     frontend:
         build: images/apache
         image: onyx/frontend
-        container_name: onyx-frontend
         volumes:
             - ..:/var/www/onyx
         ports:
@@ -15,7 +14,6 @@ services:
             - GROUP_ID=${GROUP_ID}
 #    db:
 #        image: mariadb
-#        container_name: onyx-database
 #        volumes:
 #            - ../var/data:/var/lib/mysql
 #        environment:
