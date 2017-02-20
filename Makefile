@@ -27,24 +27,26 @@ endif
 #------------------------------------------------------------------------------
 # Default target
 #------------------------------------------------------------------------------
-init: var install-deps config gulp gitignore
+init: var install-deps config gitignore
 
 #------------------------------------------------------------------------------
 # Includes
 #------------------------------------------------------------------------------
 -include vendor/onyx/core/wizards.mk
 -include docker/helpers.mk
+include webpack.mk
 include qa.mk
+
 
 #------------------------------------------------------------------------------
 # High level targets
 #------------------------------------------------------------------------------
-install-deps: composer-install bower
+install-deps: composer-install
 
 var:
 	mkdir -m a+w var
 
-.PHONY: install install-deps config composer composer-install composer-dumpautoload phpunit bower create-bower-image clean-bower-image gulp create-gulp-image clean-gulp-image uninstall clean remove-deps
+.PHONY: install install-deps config composer composer-install composer-dumpautoload phpunit uninstall clean remove-deps
 
 #------------------------------------------------------------------------------
 # Karma
@@ -82,41 +84,6 @@ phpunit: vendor/bin/phpunit
 vendor/bin/phpunit: composer-install
 
 #------------------------------------------------------------------------------
-# Bower
-#------------------------------------------------------------------------------
-create-bower-image:
-	docker build -q --build-arg UID=${USER_ID} -t onyx/bower docker/images/packaging/bower/
-
-clean-bower-image:
-	docker rmi onyx/bower
-
-bower: create-bower-image
-	docker run -t -i --rm \
-	           -v ${ONYX_DIR}:/home/bower \
-	           -u ${USER_ID}:${GROUP_ID} \
-	           onyx/bower bower --config.interactive=false install
-
-#------------------------------------------------------------------------------
-# Gulp
-#------------------------------------------------------------------------------
-create-gulp-image:
-	docker build -q --build-arg UID=${USER_ID} -t onyx/gulp docker/images/packaging/gulp/
-
-clean-gulp-image:
-	docker rmi onyx/gulp
-
-gulp = docker run -t -i --rm \
-	              -v ${ONYX_DIR}/gulpfile.js:/home/gulp/gulpfile.js \
-	              -v ${ONYX_DIR}:/home/gulp/project \
-	              -u ${USER_ID}:${GROUP_ID} \
-	              onyx/gulp gulp $1
-
-gulp: create-gulp-image
-	$(call gulp, sass)
-	$(call gulp, minify)
-	$(call gulp, publish)
-
-#------------------------------------------------------------------------------
 # Cleaning targets
 #------------------------------------------------------------------------------
 uninstall: clean remove-deps
@@ -127,11 +94,9 @@ uninstall: clean remove-deps
 clean:
 	rm -f karma
 	rm -f composer.phar
-	-docker rmi onyx/bower onyx/gulp
 
 remove-deps:
 	rm -rf vendor
-	rm -rf bower_components
 
 gitignore:
 	sed '/^composer.lock #.*$$/d' -i .gitignore
