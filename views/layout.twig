@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+{% set routeName = global.request.attributes.get('_route') %}
+<html lang="en"{% if routeName is defined %} data-route="{{ routeName }}"{% endif %}>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    {% block stylesheet %}
+        {% for asset in ['vendor.scss', 'main.scss', 'css.css'] %}
+            <link rel="stylesheet" type="text/css" href="{{ webpackAsset(asset) }}">
+        {% endfor %}
+    {% endblock %}
+    {% if webpackChunkManifest is not empty %}
+        <script>
+        //<![CDATA[
+        window.webpackManifest = {{ webpackChunkManifest|raw }}
+        //]]>
+        </script>
+    {% endif %}
+    <title>Onyx</title>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#">Navbar</a>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    {% block javascript %}
+        {% for asset in ['common.js', 'vendor.main.js', 'main.js'] %}
+        <script src="{{ webpackAsset(asset) }}"></script>
+        {% endfor %}
+    {% endblock %}
+  </body>
+</html>
