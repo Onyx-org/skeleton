@@ -27,7 +27,7 @@ endif
 #------------------------------------------------------------------------------
 # Default target
 #------------------------------------------------------------------------------
-init: var install-deps config gitignore
+init: var install-deps webpack config gitignore
 
 #------------------------------------------------------------------------------
 # Includes
@@ -41,7 +41,7 @@ include qa.mk
 #------------------------------------------------------------------------------
 # High level targets
 #------------------------------------------------------------------------------
-install-deps: composer-install
+install-deps: composer-install npm-install
 
 var:
 	mkdir -m a+w var
