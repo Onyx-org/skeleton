@@ -5,6 +5,7 @@ namespace __ONYX_Namespace;
 use Puzzle\Configuration;
 use Silex\Provider\SessionServiceProvider;
 use Onyx\Providers;
+use Onyx\Webpack\WebpackServiceProvider;
 
 class Application extends \Onyx\Application
 {
@@ -12,6 +13,7 @@ class Application extends \Onyx\Application
     {
         $this->register(new SessionServiceProvider());
         $this->register(new Providers\Twig());
+        $this->register(new WebpackServiceProvider());
 
         // Uncomment this line if you're using a RDBMS
         // $this->register(new Providers\DBAL());

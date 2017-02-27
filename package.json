@@ -1,0 +1,25 @@
+{
+  "scripts": {
+    "build": "webpack --config webpack.dev.js",
+    "build:prod": "webpack --config webpack.prod.js",
+    "build:watch": "webpack --config webpack.watch.js"
+  },
+  "devDependencies": {
+    "bootstrap": "^4.0.0-alpha.5",
+    "chunk-manifest-webpack-plugin": "^1.0.0",
+    "css-loader": "^0.26.1",
+    "extract-loader": "^0.1.0",
+    "file-loader": "^0.10.0",
+    "font-awesome": "^4.7.0",
+    "node-sass": "^4.5.0",
+    "sass-loader": "^6.0.1",
+    "style-loader": "^0.13.1",
+    "tether": "^1.4.0",
+    "uglifyjs-webpack-plugin": "^0.2.1",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.1",
+    "webpack-manifest-plugin": "^1.1.0",
+    "webpack-md5-hash": "0.0.5",
+    "webpack-merge": "^3.0.0"
+  }
+}
