@@ -4,11 +4,17 @@
 composer.phar
 vendor/
 node_modules/
+composer.lock # will be removed with the init script
 
 #================================================
 # Application runtime files
 #================================================
 var/
+
+#================================================
+# Logs
+#================================================
+npm-debug.log
 
 #================================================
 # Application hydrated configuration files
