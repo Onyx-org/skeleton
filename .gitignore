@@ -29,6 +29,7 @@ assets/css/*
 pdepend.xml
 pyramid.svg
 jdepend.svg
+coverage/
 
 #================================================
 # Eclipse files

@@ -46,7 +46,7 @@ install-deps: composer-install npm-install
 var:
 	mkdir -m a+w var
 
-.PHONY: install install-deps config composer composer-install composer-dumpautoload phpunit uninstall clean remove-deps
+.PHONY: install install-deps config composer composer-install composer-dumpautoload uninstall clean remove-deps
 
 #------------------------------------------------------------------------------
 # Karma
@@ -78,10 +78,28 @@ composer-dumpautoload: composer.phar
 #------------------------------------------------------------------------------
 # PHPUnit
 #------------------------------------------------------------------------------
-phpunit: vendor/bin/phpunit
-	docker run -it --rm --name phpunit -v ${ONYX_DIR}:/usr/src/onyx -w /usr/src/onyx php:7.1-cli vendor/bin/phpunit $(CLI_ARGS)
+phpunit = docker run -it --rm --name phpunit \
+	                 -v ${ONYX_DIR}:/usr/src/onyx \
+	                 -w /usr/src/onyx \
+	                 -u ${USER_ID}:${GROUP_ID} \
+	                 onyx/phpunit \
+	                 vendor/bin/phpunit $1 $(CLI_ARGS)
+
+phpunit: vendor/bin/phpunit create-phpunit-image
+	$(call phpunit, )
+
+phpunit-coverage: vendor/bin/phpunit create-phpunit-image
+	$(call phpunit, --coverage-html=coverage/)
 
 vendor/bin/phpunit: composer-install
+
+create-phpunit-image:
+	docker build -q -t onyx/phpunit docker/images/phpunit/
+
+clean-phpunit-image:
+	docker rmi onyx/phpunit
+
+.PHONY: phpunit create-phpunit-image clean-phpunit-image
 
 #------------------------------------------------------------------------------
 # Cleaning targets
