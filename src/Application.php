@@ -2,7 +2,6 @@
 
 namespace __ONYX_Namespace;
 
-use Puzzle\Configuration;
 use Silex\Provider\SessionServiceProvider;
 use Onyx\Providers;
 use Onyx\Webpack\WebpackServiceProvider;
@@ -12,6 +11,9 @@ class Application extends \Onyx\Application
     protected function registerProviders(): void
     {
         $this->register(new SessionServiceProvider());
+        $this->register(new Providers\Monolog([
+            // insert your loggers here
+        ]));
         $this->register(new Providers\Twig());
         $this->register(new WebpackServiceProvider());
 
