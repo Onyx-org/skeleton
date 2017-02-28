@@ -15,7 +15,7 @@ class Application extends \Onyx\Application
             // insert your loggers here
         ]));
         $this->register(new Providers\Twig());
-        $this->register(new WebpackServiceProvider());
+        $this->register(new Providers\Webpack());
 
         // Uncomment this line if you're using a RDBMS
         // $this->register(new Providers\DBAL());
@@ -28,7 +28,7 @@ class Application extends \Onyx\Application
 
     private function configureTwig(): void
     {
-        $this['twig.path.manager']->addPath(array(
+        $this['view.manager']->addPath(array(
             $this['root.path'] . 'views/',
         ));
     }
