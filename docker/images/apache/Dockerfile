@@ -28,4 +28,6 @@ RUN a2enmod rewrite && \
 
 WORKDIR /var/www/onyx
 
+COPY php.ini /usr/local/etc/php/conf.d
+
 CMD ["apache2-foreground"]
