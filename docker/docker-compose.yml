@@ -5,6 +5,7 @@ services:
         image: onyx/frontend
         volumes:
             - ..:/var/www/onyx
+            - ../system/bash-history/.frontend:/root/.bash_history
         ports:
             - "${WEB_PORT}:80"
 #        links:

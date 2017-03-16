@@ -5,6 +5,7 @@ composer.phar
 vendor/
 node_modules/
 composer.lock # will be removed with the init script
+/system/bash-history/*
 
 #================================================
 # Application runtime files
