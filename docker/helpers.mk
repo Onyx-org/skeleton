@@ -1,5 +1,7 @@
 WEB_PORT=80
 
+-include .settings.mk
+
 export WEB_PORT
 export COMPOSE_PROJECT_NAME=onyx
 

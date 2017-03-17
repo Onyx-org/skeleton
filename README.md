@@ -27,3 +27,12 @@ Launching web server (choose your port with WEB_PORT parameter, 80 if omitted)
 ```
 
 See home page at http://localhost:82
+
+
+### Settings
+
+Tired of typing WEB_PORT each time ? Try this :
+```
+ mv .settings.mk.example .settings.mk
+ vi .settings.mk
+```
