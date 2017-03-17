@@ -4,7 +4,6 @@ namespace __ONYX_Namespace;
 
 use Silex\Provider\SessionServiceProvider;
 use Onyx\Providers;
-use Onyx\Webpack\WebpackServiceProvider;
 
 class Application extends \Onyx\Application
 {
