@@ -2,7 +2,7 @@
 # ONYX Main Makefile
 ###############################################################################
 
-ONYX_DIR=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+HOST_SOURCE_PATH=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
 USER_ID=$(shell id -u)
 GROUP_ID=$(shell id -g)
@@ -34,6 +34,7 @@ init: var install-deps webpack config gitignore
 #------------------------------------------------------------------------------
 -include vendor/onyx/core/wizards.mk
 -include docker/helpers.mk
+-include phpunit.mk
 include webpack.mk
 include qa.mk
 
@@ -74,32 +75,6 @@ composer-install: composer.phar
 
 composer-dumpautoload: composer.phar
 	php composer.phar dumpautoload
-
-#------------------------------------------------------------------------------
-# PHPUnit
-#------------------------------------------------------------------------------
-phpunit = docker run -it --rm --name phpunit \
-	                 -v ${ONYX_DIR}:/usr/src/onyx \
-	                 -w /usr/src/onyx \
-	                 -u ${USER_ID}:${GROUP_ID} \
-	                 onyx/phpunit \
-	                 vendor/bin/phpunit $1 $(CLI_ARGS)
-
-phpunit: vendor/bin/phpunit create-phpunit-image
-	$(call phpunit, )
-
-phpunit-coverage: vendor/bin/phpunit create-phpunit-image
-	$(call phpunit, --coverage-html=coverage/)
-
-vendor/bin/phpunit: composer-install
-
-create-phpunit-image:
-	docker build -q -t onyx/phpunit docker/images/phpunit/
-
-clean-phpunit-image:
-	docker rmi onyx/phpunit
-
-.PHONY: phpunit create-phpunit-image clean-phpunit-image
 
 #------------------------------------------------------------------------------
 # Cleaning targets

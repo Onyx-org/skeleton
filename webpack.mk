@@ -1,5 +1,5 @@
 npm = docker run -it --rm \
-		-v ${ONYX_DIR}:/usr/src/app \
+		-v ${HOST_SOURCE_PATH}:/usr/src/app \
 		-v ${HOME}/.npm:/.npm \
 		-u ${USER_ID}:${GROUP_ID} \
 		-w /usr/src/app \
@@ -8,7 +8,7 @@ npm = docker run -it --rm \
 		npm ${1}
 
 npm2 = docker run -it --rm \
-		-v ${ONYX_DIR}:/usr/src/app \
+		-v ${HOST_SOURCE_PATH}:/usr/src/app \
 		-v ${HOME}/.npm:/.npm \
 		-u ${USER_ID}:${GROUP_ID} \
 		-w /usr/src/app \

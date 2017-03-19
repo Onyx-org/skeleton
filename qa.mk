@@ -5,7 +5,7 @@ create-qa-image:
 	docker build -q --build-arg UID=${USER_ID} -t onyx/qa docker/images/qa/
 
 qa = docker run -t -i --rm \
-                -v ${ONYX_DIR}:/var/www/onyx \
+                -v ${HOST_SOURCE_PATH}:/var/www/onyx \
                 -u ${USER_ID}:${GROUP_ID} \
                 onyx/qa $1
 
