@@ -11,7 +11,7 @@ module.exports = function(debug = false) {
             main: path.join(__dirname, './assets/js/index')
         },
         output: {
-            path: 'www/assets',
+            path: path.join(__dirname, 'www/assets'),
             filename: '[name].[chunkhash].js',
             chunkFilename: '[name].[chunkhash].js',
             publicPath: publicPath
