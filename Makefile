@@ -2,7 +2,7 @@
 # ONYX Main Makefile
 ###############################################################################
 
-HOST_SOURCE_PATH=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+HOST_SOURCE_PATH=$(shell pwd)
 
 USER_ID=$(shell id -u)
 GROUP_ID=$(shell id -g)
