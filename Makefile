@@ -47,7 +47,7 @@ install-deps: composer-install npm-install
 var:
 	mkdir -m a+w var
 
-.PHONY: install install-deps config composer composer-install composer-dumpautoload uninstall clean remove-deps
+.PHONY: install install-deps config composer composer-init composer-install composer-update composer-dumpautoload uninstall clean remove-deps
 
 #------------------------------------------------------------------------------
 # Karma
@@ -64,17 +64,31 @@ karma:
 #------------------------------------------------------------------------------
 # Composer
 #------------------------------------------------------------------------------
-composer: composer.phar
-	php composer.phar $(CLI_ARGS) $(COMPOSER_ARGS)
 
-composer.phar:
-	curl -sS https://getcomposer.org/installer | php
+COMPOSER_VERSION?=latest
 
-composer-install: composer.phar
-	php composer.phar install --ignore-platform-reqs
+composer-run = docker run -t -i --rm \
+                -v ${HOST_SOURCE_PATH}:/var/www/app \
+                -v ~/.cache/composer:/tmp/composer \
+                -e COMPOSER_HOME=/tmp/composer \
+                -w /var/www/app \
+                -u ${USER_ID}:${GROUP_ID} \
+                composer:${COMPOSER_VERSION} $1 $2
 
-composer-dumpautoload: composer.phar
-	php composer.phar dumpautoload
+composer-init:
+	mkdir -p ~/.cache/composer
+
+composer: composer-init
+	$(call composer-run, $(CLI_ARGS), $(COMPOSER_ARGS))
+
+composer-install: composer-init
+	$(call composer-run, install, --ignore-platform-reqs)
+
+composer-update: composer-init
+	$(call composer-run, update, --ignore-platform-reqs)
+
+composer-dumpautoload: composer-init
+	$(call composer-run, dumpautoload)
 
 #------------------------------------------------------------------------------
 # Cleaning targets
