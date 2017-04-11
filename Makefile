@@ -100,7 +100,6 @@ uninstall: clean remove-deps
 
 clean:
 	rm -f karma
-	rm -f composer.phar
 
 remove-deps:
 	rm -rf vendor
