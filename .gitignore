@@ -3,7 +3,7 @@
 #================================================
 vendor/
 node_modules/
--composer.lock # will be removed with the init script
+composer.lock
 
 #================================================
 # Application runtime files

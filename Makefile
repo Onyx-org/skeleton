@@ -36,7 +36,7 @@ var:
 install-dependencies: composer-install npm-install
 
 gitignore:
-	sed '/^composer.lock #.*$$/d' -i .gitignore
+	sed '/^composer.lock$$/d' -i .gitignore
 
 help:
 	@echo "========================================"
