@@ -38,4 +38,6 @@ RUN wget http://static.pdepend.org/php/latest/pdepend.phar && \
     chmod +x pdepend.phar && \
     mv pdepend.phar /usr/local/bin/pdepend
 
+COPY php.ini /usr/local/etc/php/conf.d
+
 CMD ["/bin/bash"]

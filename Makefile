@@ -10,99 +10,43 @@ GROUP_ID=$(shell id -g)
 export USER_ID
 export GROUP_ID
 
-# Spread cli arguments for composer & phpunit
-ifneq (,$(filter $(firstword $(MAKECMDGOALS)),composer phpunit))
-    CLI_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
-    $(eval $(CLI_ARGS):;@:)
-endif
+#------------------------------------------------------------------------------
 
-# Add ignore platform reqs for composer install & update
-COMPOSER_ARGS=
-ifeq (composer, $(firstword $(MAKECMDGOALS)))
-    ifneq (,$(filter install update,$(CLI_ARGS)))
-        COMPOSER_ARGS=--ignore-platform-reqs
-    endif
-endif
-
-#------------------------------------------------------------------------------
-# Default target
-#------------------------------------------------------------------------------
-init: var install-deps webpack config gitignore
-
-#------------------------------------------------------------------------------
-# Includes
-#------------------------------------------------------------------------------
 -include vendor/onyx/core/wizards.mk
--include docker/helpers.mk
--include phpunit.mk
-include webpack.mk
-include qa.mk
-
+include makefiles/composer.mk
+include makefiles/docker.mk
+include makefiles/karma.mk
+include makefiles/phpunit.mk
+include makefiles/qa.mk
+include makefiles/webpack.mk
+include makefiles/whalephant.mk
 
 #------------------------------------------------------------------------------
-# High level targets
-#------------------------------------------------------------------------------
-install-deps: composer-install npm-install
+
+.DEFAULT_GOAL := help
+
+init: var install-dependencies config webpack gitignore ## Initialize project
 
 var:
 	mkdir -m a+w var
 
-.PHONY: install install-deps config composer composer-init composer-install composer-update composer-dumpautoload uninstall clean remove-deps
-
-#------------------------------------------------------------------------------
-# Karma
-#------------------------------------------------------------------------------
-config: karma
-	./karma hydrate
-
-karma:
-	$(eval LATEST_VERSION := $(shell curl -L -s -H 'Accept: application/json' https://github.com/niktux/karma/releases/latest | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/'))
-	@echo "Latest version of Karma is ${LATEST_VERSION}"
-	wget -O karma -q https://github.com/Niktux/karma/releases/download/${LATEST_VERSION}/karma.phar
-	chmod 0755 karma
-
-#------------------------------------------------------------------------------
-# Composer
-#------------------------------------------------------------------------------
-
-COMPOSER_VERSION?=latest
-
-composer-run = docker run -t -i --rm \
-                -v ${HOST_SOURCE_PATH}:/var/www/app \
-                -v ~/.cache/composer:/tmp/composer \
-                -e COMPOSER_CACHE_DIR=/tmp/composer \
-                -w /var/www/app \
-                -u ${USER_ID}:${GROUP_ID} \
-                composer:${COMPOSER_VERSION} $1 $2
-
-composer-init:
-	mkdir -p ~/.cache/composer
-
-composer: composer-init
-	$(call composer-run, $(CLI_ARGS), $(COMPOSER_ARGS))
-
-composer-install: composer-init
-	$(call composer-run, install, --ignore-platform-reqs)
-
-composer-update: composer-init
-	$(call composer-run, update, --ignore-platform-reqs)
-
-composer-dumpautoload: composer-init
-	$(call composer-run, dumpautoload)
-
-#------------------------------------------------------------------------------
-# Cleaning targets
-#------------------------------------------------------------------------------
-uninstall: clean remove-deps
-	rm -rf www/assets
-	rm -f composer.lock
-	rm -f config/built-in/*.yml
-
-clean:
-	rm -f karma
-
-remove-deps:
-	rm -rf vendor
+install-dependencies: composer-install npm-install
 
 gitignore:
 	sed '/^composer.lock #.*$$/d' -i .gitignore
+
+help:
+	@echo "========================================"
+	@echo "ONYX Makefile"
+	@echo "========================================"
+	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+	@echo "========================================"
+
+#------------------------------------------------------------------------------
+
+clean: clean-composer clean-docker clean-karma clean-phpunit clean-qa clean-webpack clean-whalephant
+	-rm -rf var
+
+#------------------------------------------------------------------------------
+
+.PHONY: init install-dependencies gitignore help clean

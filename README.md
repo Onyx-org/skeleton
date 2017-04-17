@@ -9,13 +9,14 @@ PHP application skeleton based on Silex 2. Promote framework agnostic conception
 ### Requirements
 
 * docker, executable by your user (see official documentation to set it up)
+* docker-compose
 * php >= 7.1.0 (and some ext)
 
 ### Installation
 
 Download deps, configure, ...
 ```bash
- make
+ make init
  make wizard-set-namespace
 ```
 **Note :** In *wizard-set-namespace*, use **::** as namespace delimiter (ex: *Onyx::Cool::App*)
