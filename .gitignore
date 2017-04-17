@@ -3,7 +3,7 @@
 #================================================
 vendor/
 node_modules/
-composer.lock # will be removed with the init script
+-composer.lock # will be removed with the init script
 
 #================================================
 # Application runtime files
@@ -11,30 +11,25 @@ composer.lock # will be removed with the init script
 var/
 
 #================================================
-# Logs
+Development
 #================================================
 npm-debug.log
 /system/bash-history/*
+.env
 
 #================================================
-# Application hydrated configuration files
+Generated files
 #================================================
 karma
 config/built-in/*.yml
 config/local/*.yml
 
-#================================================
-# Deployed files
-#================================================
-www/assets/*
-assets/css/*
-
-#================================================
-# Whalephant files
-#================================================
+whalephant
 docker/images/phpunit/Dockerfile
 docker/images/phpunit/php.ini
-whalephant
+
+www/assets/*
+assets/css/*
 
 #================================================
 # QA reports
