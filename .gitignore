@@ -1,11 +1,9 @@
 #================================================
 # Dependencies
 #================================================
-composer.phar
 vendor/
 node_modules/
 composer.lock # will be removed with the init script
-/system/bash-history/*
 
 #================================================
 # Application runtime files
@@ -16,6 +14,7 @@ var/
 # Logs
 #================================================
 npm-debug.log
+/system/bash-history/*
 
 #================================================
 # Application hydrated configuration files
@@ -31,11 +30,16 @@ www/assets/*
 assets/css/*
 
 #================================================
+# Whalephant files
+#================================================
+docker/images/phpunit/Dockerfile
+docker/images/phpunit/php.ini
+whalephant
+
+#================================================
 # QA reports
 #================================================
-pdepend.xml
-pyramid.svg
-jdepend.svg
+reports/
 coverage/
 
 #================================================
