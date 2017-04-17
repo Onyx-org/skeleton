@@ -25,7 +25,10 @@ include makefiles/whalephant.mk
 
 .DEFAULT_GOAL := help
 
-init: var install-dependencies config webpack gitignore ## Initialize project
+init: var install-dependencies config webpack gitignore .env ## Initialize project
+
+.env:
+	cp .env.example .env
 
 var:
 	mkdir -m a+w var

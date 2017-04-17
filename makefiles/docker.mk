@@ -2,11 +2,9 @@
 # Docker
 #------------------------------------------------------------------------------
 
-WEB_PORT?=80
 DOCKER_COMPOSE_YML?=docker/docker-compose.yml
 
-export WEB_PORT
-export COMPOSE_PROJECT_NAME=onyx
+#------------------------------------------------------------------------------
 
 up: prepare-bash-history-directory ## Create environment
 	docker-compose -f ${DOCKER_COMPOSE_YML} up -d
