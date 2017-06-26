@@ -3,6 +3,7 @@
 #================================================
 vendor/
 node_modules/
+composer.lock
 
 #================================================
 # Application runtime files
