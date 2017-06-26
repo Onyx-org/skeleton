@@ -15,7 +15,7 @@ console = docker run -t -i --rm \
 # Spread cli arguments
 ifneq (,$(filter $(firstword $(MAKECMDGOALS)),console))
     CLI_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
-    ESCAPED_CLI_ARGS = $(subst :,-,${CLI_ARGS})
+    ESCAPED_CLI_ARGS = $(subst :,,${CLI_ARGS})
     $(eval $(ESCAPED_CLI_ARGS):;@:)
 endif
 
@@ -26,7 +26,7 @@ create-console-image: docker/images/console/Dockerfile
 
 console: create-console-image ## Run console command
 	$(call console, ${CLI_ARGS})
-	
+
 #------------------------------------------------------------------------------
 
 clean-console:
