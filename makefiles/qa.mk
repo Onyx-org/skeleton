@@ -18,7 +18,7 @@ reports:
 	mkdir reports
 
 create-qa-image:
-	docker build -q --build-arg UID=${USER_ID} -t onyx/qa docker/images/qa/
+	docker build -q --build-arg UID=${USER_ID} -t ${QA_IMAGE_NAME} docker/images/qa/
 
 qa-loc: create-qa-image ## Run PHPLoc
 	$(call qa-phar, phploc, --count-tests onyx)

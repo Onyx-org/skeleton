@@ -14,6 +14,7 @@ export GROUP_ID
 
 -include vendor/onyx/core/wizards.mk
 include makefiles/composer.mk
+-include makefiles/console.mk
 include makefiles/docker.mk
 include makefiles/karma.mk
 include makefiles/phpunit.mk
