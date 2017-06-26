@@ -27,6 +27,8 @@ config/local/*.yml
 whalephant
 docker/images/phpunit/Dockerfile
 docker/images/phpunit/php.ini
+docker/images/console/Dockerfile
+docker/images/console/php.ini
 
 www/assets/*
 assets/css/*
