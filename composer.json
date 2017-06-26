@@ -7,7 +7,7 @@
     },
     "require": {
         "php": ">=7.1.0",
-        "onyx/core": "dev-route-lister",
+        "onyx/core": "~0.4",
         "silex/silex": "~2.0",
         "puzzle/configuration": "~3.0",
         "doctrine/dbal": "~2.5",
