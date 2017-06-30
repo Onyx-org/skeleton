@@ -21,17 +21,17 @@ endif
 
 #------------------------------------------------------------------------------
 
-create-console-image: docker/images/console/Dockerfile
+console-create-image: docker/images/console/Dockerfile
 	docker build -q --build-arg UID=${USER_ID} -t ${CONSOLE_IMAGE_NAME} docker/images/console/
 
-console: create-console-image ## Run console command
+console: console-create-image ## Run console command
 	$(call console, ${CLI_ARGS})
 
 #------------------------------------------------------------------------------
 
-clean-console:
+console-clean:
 	-docker rmi ${CONSOLE_IMAGE_NAME}
 
 #------------------------------------------------------------------------------
 
-.PHONY: create-console-image console clean-console
+.PHONY: console-create-image console console-clean
