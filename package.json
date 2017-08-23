@@ -5,7 +5,7 @@
     "build:watch": "webpack --config webpack.watch.js"
   },
   "devDependencies": {
-    "bootstrap": "^4.0.0-alpha.5",
+    "bootstrap": "4.0.0-alpha.6",
     "chunk-manifest-webpack-plugin": "^1.0.0",
     "css-loader": "^0.26.1",
     "extract-loader": "^0.1.0",
