@@ -11,6 +11,8 @@ npm = docker run -it --rm \
 		node:7 \
 		npm ${1}
 
+-include .env
+
 #------------------------------------------------------------------------------
 
 npm-install: npm-cache-dir
@@ -24,6 +26,9 @@ webpack: clean-webpack-assets ## Run webpack
 
 webpack-prod: clean-webpack-assets ## Run webpack for production
 	$(call npm, run build:prod)
+
+webpack-watch: .env
+	$(call npm, run watch, -e "DEV_SERVER_PORT=$(WEBPACK_DEV_SERVER_PORT)" -p "$(WEBPACK_PUBLISHED_PORT):$(WEBPACK_PUBLISHED_PORT)")
 
 #------------------------------------------------------------------------------
 

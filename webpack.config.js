@@ -52,7 +52,10 @@ module.exports = function(debug = false) {
                 {
                     // Any file type that needs to be copied to public assets without any parsing
                     test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)\?*.*/,
-                    loader: 'file-loader?name=[name].[hash].[ext]'
+                    loader: 'file-loader?name=[name].[hash].[ext]',
+                    options: {
+                        name: "[path][name].[hash].[ext]",
+                    },	
                 },
                 {
                     test: /\.html$/,
@@ -101,33 +104,7 @@ module.exports = function(debug = false) {
                 name: 'vendor.admin',
                 chunks: ['admin'],
                 minChunks: module => /node_modules\//.test(module.resource)
-            }),
-            new webpack.LoaderOptionsPlugin({
-                minimize: true, // Enable minification
-                debug: false
-            }),
-            new webpack.optimize.UglifyJsPlugin({
-                sourceMap: true,
-                beautify: debug,
-                compress: {
-                    warnings: false, // display warnings when dropping unreachable code or unused declarations etc.
-                    screw_ie8: true, // no support for ie6-8
-                    conditionals: true, // apply optimizations for if-s and conditional expressions
-                    unused: true, // drop unreferenced functions and variables
-                    comparisons: true, // apply certain optimizations to binary nodes
-                    sequences: true, // join consecutive simple statements using the comma operator
-                    dead_code: true, // remove unreachable code
-                    evaluate: true, // attempt to evaluate constant expressions
-                    if_return: true, // optimizations for if/return and if/continue
-                    join_vars: true, // join consecutive var statements,
-                },
-                output: {
-                    comments: false
-                },
-                mangle: {
-                    screw_ie8: true, // no support for ie6-8
-                }
-            }),
+            })
         ],
         performance: {
             // Hide webpack files optimization warnings
