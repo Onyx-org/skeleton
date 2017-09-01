@@ -21,7 +21,7 @@ endif
 # Add ignore platform reqs for composer install & update
 COMPOSER_ARGS=
 ifeq (composer, $(firstword $(MAKECMDGOALS)))
-    ifneq (,$(filter install update,$(CLI_ARGS)))
+    ifneq (,$(filter install update require,$(CLI_ARGS)))
         COMPOSER_ARGS=--ignore-platform-reqs
     endif
 endif
