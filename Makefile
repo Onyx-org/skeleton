@@ -12,7 +12,8 @@ export GROUP_ID
 
 #------------------------------------------------------------------------------
 
--include vendor/onyx/core/wizards.mk
+-include vendor/onyx/core/makefiles/wizards/namespace.mk
+-include vendor/onyx/core/makefiles/wizards/standard.mk
 include makefiles/composer.mk
 -include makefiles/console.mk
 include makefiles/docker.mk
