@@ -1,0 +1,4 @@
+# http://robots-txt.com/ for further informations
+# Current : disallow index from crawlers
+User-Agent: *
+Disallow: /
